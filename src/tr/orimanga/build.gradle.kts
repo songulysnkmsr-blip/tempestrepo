@@ -56,7 +56,7 @@ android {
 }
 
 dependencies {
-    compileOnly("com.github.tachiyomiorg:extensions-lib:1.4")
+    compileOnly("com.github.tachiyomiorg:extensions-lib:1.4.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     implementation("org.jsoup:jsoup:1.17.2")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
