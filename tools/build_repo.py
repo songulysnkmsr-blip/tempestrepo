@@ -69,9 +69,10 @@ def main():
 
     repo_json = {
         "meta": {
-            "name": "Turkish Manga Extensions (Tachimanga / Mihon)",
-            "description": "Tachimanga (iOS) ve Mihon için bağımsız çalışan Türkçe manga uzantıları (Jura Tempest, Mangtto, Ori Manga, Gölge Bahçesi).",
-            "website": "https://github.com/songulysnkmsr-blip/tempestrepo"
+            "name": "Tempest Repo",
+            "shortName": "TR",
+            "website": "https://github.com/songulysnkmsr-blip/tempestrepo",
+            "signingKeyFingerprint": "9add655a78e96c4ec7a53ef89dccb557cb5d767489fac5e785d671a5a75d4da2"
         }
     }
 
