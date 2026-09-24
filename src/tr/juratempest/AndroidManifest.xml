@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
+        android:label="Tachiyomi: Jura Tempest"
+        android:icon="@mipmap/ic_launcher">
+        <meta-data
+            android:name="tachiyomi.extension.class"
+            android:value="eu.kanade.tachiyomi.extension.tr.juratempest.JuraTempest" />
+        <meta-data
+            android:name="tachiyomi.extension.version"
+            android:value="1.4.1" />
+        <meta-data
+            android:name="tachiyomi.extension.nsfw"
+            android:value="0" />
+    </application>
+</manifest>
