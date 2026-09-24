@@ -32,6 +32,10 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
+      - name: Accept Android SDK Licenses
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses || true
+
       - name: Make Gradle Wrapper Executable
         run: |
           chmod +x gradlew || true
@@ -44,9 +48,14 @@ jobs:
         run: |
           python3 tools/build_repo.py
 
+      - name: Verify build artifacts
+        run: |
+          ls -la repo/
+          ls -la repo/apk/ || true
+
       - name: Deploy to repo branch
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: repo
           folder: repo
-          clean: true
+          clean: false

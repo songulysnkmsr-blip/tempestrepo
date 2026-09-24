@@ -1,39 +1,14 @@
 plugins {
     id("com.android.application")
-    id("kotlin-android")
-    id("kotlinx-serialization")
+    kotlin("android")
+    kotlin("plugin.serialization")
 }
 
-android {
-    namespace = "eu.kanade.tachiyomi.extension.tr.mangtto"
-    compileSdk = 35
-
-    defaultConfig {
-        applicationId = "eu.kanade.tachiyomi.extension.tr.mangtto"
-        minSdk = 21
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.4.1"
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+ext {
+    set("pkgNameSuffix", "tr.mangtto")
+    set("extClass", ".Mangtto")
+    set("extVersionCode", 1)
+    set("libVersion", "1.4")
 }
 
-dependencies {
-    compileOnly("com.github.tachiyomiorg:extensions-lib:1.4.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
-}
+apply(from = "$rootDir/common.gradle")

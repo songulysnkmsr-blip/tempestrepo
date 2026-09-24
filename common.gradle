@@ -1,4 +1,5 @@
 android {
+    namespace "eu.kanade.tachiyomi.extension.${ext.pkgNameSuffix}"
     compileSdk 34
 
     defaultConfig {
@@ -8,6 +9,27 @@ android {
         versionCode ext.extVersionCode as Integer
         versionName "${ext.libVersion}.${ext.extVersionCode}"
         applicationId "eu.kanade.tachiyomi.extension.${ext.pkgNameSuffix}"
+    }
+
+    signingConfigs {
+        release {
+            if (file("${rootDir}/signingkey.p12").exists()) {
+                storeFile file("${rootDir}/signingkey.p12")
+                storePassword "tempestpass"
+                keyAlias "tempest"
+                keyPassword "tempestpass"
+                storeType "PKCS12"
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            if (file("${rootDir}/signingkey.p12").exists()) {
+                signingConfig signingConfigs.release
+            }
+            minifyEnabled false
+        }
     }
 
     compileOptions {
@@ -31,7 +53,9 @@ android {
 
 dependencies {
     compileOnly "com.github.tachiyomiorg:extensions-lib:1.4"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3"
     implementation "org.jsoup:jsoup:1.17.2"
     implementation "com.squareup.okhttp3:okhttp:4.12.0"
     implementation "io.reactivex:rxjava:1.3.8"
 }
+

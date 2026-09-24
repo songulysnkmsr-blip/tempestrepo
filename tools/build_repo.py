@@ -11,6 +11,7 @@ import shutil
 import hashlib
 import struct
 import re
+import subprocess
 from pathlib import Path
 
 def generate_source_id(name: str, lang: str, version_id: int = 1) -> str:
@@ -67,12 +68,27 @@ def main():
     apk_out.mkdir(parents=True, exist_ok=True)
     icon_out.mkdir(parents=True, exist_ok=True)
 
+    signing_fp = "01e252e0645243a25e8726a236f2305c00fab708a98384727fbb1cfc840a960f"
+    p12_path = root_dir / "signingkey.p12"
+    if p12_path.exists():
+        try:
+            res = subprocess.run([
+                'openssl', 'pkcs12', '-in', str(p12_path), '-nokeys', '-nodes', '-passin', 'pass:tempestpass'
+            ], capture_output=True, text=True)
+            res2 = subprocess.run([
+                'openssl', 'x509', '-outform', 'DER'
+            ], input=res.stdout.encode(), capture_output=True)
+            if res2.stdout:
+                signing_fp = hashlib.sha256(res2.stdout).hexdigest()
+        except Exception:
+            pass
+
     repo_json = {
         "meta": {
             "name": "Tempest Repo",
             "shortName": "TR",
             "website": "https://github.com/songulysnkmsr-blip/tempestrepo",
-            "signingKeyFingerprint": "9add655a78e96c4ec7a53ef89dccb557cb5d767489fac5e785d671a5a75d4da2"
+            "signingKeyFingerprint": signing_fp
         }
     }
 
@@ -121,14 +137,15 @@ def main():
         # Check for APK
         sha256 = ""
         found_apk = None
-        for cand in [
-            ext_dir / "build" / "outputs" / "apk" / "release" / f"{slug}-release-unsigned.apk",
-            ext_dir / "build" / "outputs" / "apk" / "release" / f"{slug}-release.apk",
-            apk_out / apk_filename
-        ]:
-            if cand.exists():
-                found_apk = cand
-                break
+        release_dir = ext_dir / "build" / "outputs" / "apk" / "release"
+        if release_dir.exists():
+            for apk_cand in sorted(release_dir.glob("*.apk")):
+                if not apk_cand.name.endswith("-unaligned.apk"):
+                    found_apk = apk_cand
+                    break
+
+        if not found_apk and (apk_out / apk_filename).exists():
+            found_apk = apk_out / apk_filename
 
         if found_apk and found_apk != apk_out / apk_filename:
             shutil.copy2(found_apk, apk_out / apk_filename)
