@@ -161,12 +161,8 @@ class GolgeBahcesi : HttpSource() {
             val isLocked = ch.optBoolean("isLocked", false)
             if (isLocked) continue
 
-            // Encrypted secure chapters cannot be decoded — skip them too
-            val deliverySystem = ch.optString("deliverySystem", "legacy")
-            val imageEnc = ch.optBoolean("imageEnc", false)
-            if (deliverySystem == "secure" && imageEnc) continue
-
             val chapterId = ch.optString("id")
+            if (chapterId.isBlank()) continue
 
             val chapter = SChapter.create().apply {
                 // Store the chapter ID for direct API lookup in pageListParse

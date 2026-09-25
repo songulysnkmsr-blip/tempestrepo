@@ -90,12 +90,15 @@ class Mangtto : HttpSource() {
 
     // Chapters
     override fun chapterListRequest(manga: SManga): Request {
-        return GET("$baseUrl/api/manga/${manga.url}/chapters?skip=0&take=1000", headers)
+        // No query params — the server enforces take≤50 and parametreless returns all chapters
+        return GET("$baseUrl/api/manga/${manga.url}/chapters", headers)
     }
 
     override fun chapterListParse(response: Response): List<SChapter> {
-        val segments = response.request.url.pathSegments
-        val mangaSlug = segments.getOrNull(segments.size - 2) ?: ""
+        // Extract mangaSlug from the URL path (/api/manga/<slug>/chapters)
+        val path = response.request.url.encodedPath
+        val parts = path.trimEnd('/').split("/")
+        val mangaSlug = parts.getOrNull(parts.size - 2) ?: ""
         val data = json.decodeFromString<MangttoChapterPageData>(response.body?.string().orEmpty())
 
         return data.chapters
