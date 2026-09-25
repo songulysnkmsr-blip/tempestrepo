@@ -12,8 +12,8 @@ android {
         applicationId = "eu.kanade.tachiyomi.extension.tr.golgebahcesi"
         minSdk = 26
         targetSdk = 34
-        versionCode = 140002
-        versionName = "1.4.2"
+        versionCode = 140003
+        versionName = "1.4.3"
     }
 
     signingConfigs {
@@ -32,7 +32,8 @@ android {
     buildTypes {
         release {
             signingConfig = signingConfigs.getByName("release")
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), rootProject.file("proguard-rules.pro"))
         }
     }
 
@@ -56,6 +57,7 @@ android {
 }
 
 dependencies {
+    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.9.22")
     compileOnly("com.github.tachiyomiorg:extensions-lib:1.4.1")
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     compileOnly("org.jsoup:jsoup:1.17.2")

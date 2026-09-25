@@ -15,7 +15,7 @@
             android:value=".OriManga" />
         <meta-data
             android:name="tachiyomi.extension.version"
-            android:value="1.4.2" />
+            android:value="1.4.3" />
         <meta-data
             android:name="tachiyomi.extension.nsfw"
             android:value="0" />

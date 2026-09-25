@@ -112,8 +112,8 @@ def main():
         })
 
         build_gradle = ext_dir / "build.gradle.kts"
-        ext_ver_code = 140002
-        version_name = "1.4.2"
+        ext_ver_code = 140003
+        version_name = "1.4.3"
 
         if build_gradle.exists():
             bg_content = build_gradle.read_text(encoding="utf-8")
