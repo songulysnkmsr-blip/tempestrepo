@@ -1,82 +1,96 @@
-[
-  {
-    "name": "Gölge Bahçesi",
-    "pkg": "eu.kanade.tachiyomi.extension.tr.golgebahcesi",
-    "apk": "tachiyomi-tr.golgebahcesi-v1.4.3.apk",
-    "lang": "tr",
-    "code": 140003,
-    "version": "1.4.3",
-    "nsfw": 0,
-    "hasReadme": 0,
-    "hasChangelog": 0,
-    "sources": [
-      {
-        "name": "Gölge Bahçesi",
-        "lang": "tr",
-        "id": "9140435144936721031",
-        "baseUrl": "https://golgebahcesi.com"
-      }
-    ],
-    "sha256": "31c034dcf7c2d40cf951f35cd5dedfc5fd49943ea569cc04859c1801f82cedce"
+{
+  "name": "Tempest Repo",
+  "badgeLabel": "TR",
+  "signingKey": "01e252e0645243a25e8726a236f2305c00fab708a98384727fbb1cfc840a960f",
+  "contact": {
+    "website": "https://github.com/songulysnkmsr-blip/tempestrepo"
   },
-  {
-    "name": "Jura Tempest",
-    "pkg": "eu.kanade.tachiyomi.extension.tr.juratempest",
-    "apk": "tachiyomi-tr.juratempest-v1.4.3.apk",
-    "lang": "tr",
-    "code": 140003,
-    "version": "1.4.3",
-    "nsfw": 0,
-    "hasReadme": 0,
-    "hasChangelog": 0,
-    "sources": [
+  "extensionList": {
+    "extensions": [
+      {
+        "name": "G\u00f6lge Bah\u00e7esi",
+        "packageName": "eu.kanade.tachiyomi.extension.tr.golgebahcesi",
+        "resources": {
+          "apkUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/apk/tachiyomi-tr.golgebahcesi-v1.4.4.apk",
+          "iconUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/icon/eu.kanade.tachiyomi.extension.tr.golgebahcesi.png",
+          "jarUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/jar/tachiyomi-tr.golgebahcesi-v1.4.4.jar"
+        },
+        "extensionLib": "1.4",
+        "versionCode": "140004",
+        "versionName": "1.4.4",
+        "contentWarning": "CONTENT_WARNING_SAFE",
+        "sources": [
+          {
+            "id": "9140435144936721031",
+            "name": "G\u00f6lge Bah\u00e7esi",
+            "language": "tr",
+            "homeUrl": "https://golgebahcesi.com"
+          }
+        ]
+      },
       {
         "name": "Jura Tempest",
-        "lang": "tr",
-        "id": "6705015340834810281",
-        "baseUrl": "https://juratempe.st"
-      }
-    ],
-    "sha256": "409cc3e841734bca2d9e4f63615ce3999f4861c93b7f89ebb10ca0c7494075af"
-  },
-  {
-    "name": "Mangtto",
-    "pkg": "eu.kanade.tachiyomi.extension.tr.mangtto",
-    "apk": "tachiyomi-tr.mangtto-v1.4.3.apk",
-    "lang": "tr",
-    "code": 140003,
-    "version": "1.4.3",
-    "nsfw": 0,
-    "hasReadme": 0,
-    "hasChangelog": 0,
-    "sources": [
+        "packageName": "eu.kanade.tachiyomi.extension.tr.juratempest",
+        "resources": {
+          "apkUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/apk/tachiyomi-tr.juratempest-v1.4.4.apk",
+          "iconUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/icon/eu.kanade.tachiyomi.extension.tr.juratempest.png",
+          "jarUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/jar/tachiyomi-tr.juratempest-v1.4.4.jar"
+        },
+        "extensionLib": "1.4",
+        "versionCode": "140004",
+        "versionName": "1.4.4",
+        "contentWarning": "CONTENT_WARNING_SAFE",
+        "sources": [
+          {
+            "id": "6705015340834810281",
+            "name": "Jura Tempest",
+            "language": "tr",
+            "homeUrl": "https://juratempe.st"
+          }
+        ]
+      },
       {
         "name": "Mangtto",
-        "lang": "tr",
-        "id": "6325833963641968004",
-        "baseUrl": "https://mangtto.com"
-      }
-    ],
-    "sha256": "73d9dad8a4b2bb083f56560dc1e22bc62407ea6c318b0a6cbe7b04a3fce2a85e"
-  },
-  {
-    "name": "Ori Manga",
-    "pkg": "eu.kanade.tachiyomi.extension.tr.orimanga",
-    "apk": "tachiyomi-tr.orimanga-v1.4.3.apk",
-    "lang": "tr",
-    "code": 140003,
-    "version": "1.4.3",
-    "nsfw": 0,
-    "hasReadme": 0,
-    "hasChangelog": 0,
-    "sources": [
+        "packageName": "eu.kanade.tachiyomi.extension.tr.mangtto",
+        "resources": {
+          "apkUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/apk/tachiyomi-tr.mangtto-v1.4.4.apk",
+          "iconUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/icon/eu.kanade.tachiyomi.extension.tr.mangtto.png",
+          "jarUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/jar/tachiyomi-tr.mangtto-v1.4.4.jar"
+        },
+        "extensionLib": "1.4",
+        "versionCode": "140004",
+        "versionName": "1.4.4",
+        "contentWarning": "CONTENT_WARNING_SAFE",
+        "sources": [
+          {
+            "id": "6325833963641968004",
+            "name": "Mangtto",
+            "language": "tr",
+            "homeUrl": "https://mangtto.com"
+          }
+        ]
+      },
       {
         "name": "Ori Manga",
-        "lang": "tr",
-        "id": "4629101508845138320",
-        "baseUrl": "https://orimanga.net"
+        "packageName": "eu.kanade.tachiyomi.extension.tr.orimanga",
+        "resources": {
+          "apkUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/apk/tachiyomi-tr.orimanga-v1.4.4.apk",
+          "iconUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/icon/eu.kanade.tachiyomi.extension.tr.orimanga.png",
+          "jarUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/jar/tachiyomi-tr.orimanga-v1.4.4.jar"
+        },
+        "extensionLib": "1.4",
+        "versionCode": "140004",
+        "versionName": "1.4.4",
+        "contentWarning": "CONTENT_WARNING_SAFE",
+        "sources": [
+          {
+            "id": "4629101508845138320",
+            "name": "Ori Manga",
+            "language": "tr",
+            "homeUrl": "https://orimanga.net"
+          }
+        ]
       }
-    ],
-    "sha256": "85918591069c77f69b70756dca830b97be9c73770dba8fb990edcfb0485cdced"
+    ]
   }
-]
+}
