@@ -2,10 +2,10 @@
   {
     "name": "Gölge Bahçesi",
     "pkg": "eu.kanade.tachiyomi.extension.tr.golgebahcesi",
-    "apk": "tachiyomi-tr.golgebahcesi-v1.4.2.apk",
+    "apk": "tachiyomi-tr.golgebahcesi-v1.4.3.apk",
     "lang": "tr",
-    "code": 140002,
-    "version": "1.4.2",
+    "code": 140003,
+    "version": "1.4.3",
     "nsfw": 0,
     "hasReadme": 0,
     "hasChangelog": 0,
@@ -17,15 +17,15 @@
         "baseUrl": "https://golgebahcesi.com"
       }
     ],
-    "sha256": "7c91112fb509b39375c51f6f64dc662a99c8bb870c299f236cf9e61a99cccab8"
+    "sha256": "31c034dcf7c2d40cf951f35cd5dedfc5fd49943ea569cc04859c1801f82cedce"
   },
   {
     "name": "Jura Tempest",
     "pkg": "eu.kanade.tachiyomi.extension.tr.juratempest",
-    "apk": "tachiyomi-tr.juratempest-v1.4.2.apk",
+    "apk": "tachiyomi-tr.juratempest-v1.4.3.apk",
     "lang": "tr",
-    "code": 140002,
-    "version": "1.4.2",
+    "code": 140003,
+    "version": "1.4.3",
     "nsfw": 0,
     "hasReadme": 0,
     "hasChangelog": 0,
@@ -37,15 +37,15 @@
         "baseUrl": "https://juratempe.st"
       }
     ],
-    "sha256": "67263134c2110b0d7f8ebfdde354f6c9584de51b4338529b553ffdbdd977550c"
+    "sha256": "409cc3e841734bca2d9e4f63615ce3999f4861c93b7f89ebb10ca0c7494075af"
   },
   {
     "name": "Mangtto",
     "pkg": "eu.kanade.tachiyomi.extension.tr.mangtto",
-    "apk": "tachiyomi-tr.mangtto-v1.4.2.apk",
+    "apk": "tachiyomi-tr.mangtto-v1.4.3.apk",
     "lang": "tr",
-    "code": 140002,
-    "version": "1.4.2",
+    "code": 140003,
+    "version": "1.4.3",
     "nsfw": 0,
     "hasReadme": 0,
     "hasChangelog": 0,
@@ -57,15 +57,15 @@
         "baseUrl": "https://mangtto.com"
       }
     ],
-    "sha256": "553c8eeb5fc7d84de7e2dcd16ae54bca16433131fa406a00123a5bae9d5fed11"
+    "sha256": "73d9dad8a4b2bb083f56560dc1e22bc62407ea6c318b0a6cbe7b04a3fce2a85e"
   },
   {
     "name": "Ori Manga",
     "pkg": "eu.kanade.tachiyomi.extension.tr.orimanga",
-    "apk": "tachiyomi-tr.orimanga-v1.4.2.apk",
+    "apk": "tachiyomi-tr.orimanga-v1.4.3.apk",
     "lang": "tr",
-    "code": 140002,
-    "version": "1.4.2",
+    "code": 140003,
+    "version": "1.4.3",
     "nsfw": 0,
     "hasReadme": 0,
     "hasChangelog": 0,
@@ -77,6 +77,6 @@
         "baseUrl": "https://orimanga.net"
       }
     ],
-    "sha256": "7b645c2b50c22302c087863b343f6d982b0aed395da971292ba7c9bb6ffd7f7f"
+    "sha256": "85918591069c77f69b70756dca830b97be9c73770dba8fb990edcfb0485cdced"
   }
 ]
