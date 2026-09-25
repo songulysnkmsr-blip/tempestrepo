@@ -16,7 +16,8 @@
         "id": "9140435144936721031",
         "baseUrl": "https://golgebahcesi.com"
       }
-    ]
+    ],
+    "sha256": "275e549794d23a7e6313d64f1c25f2ccc75ef59132eca205cc905dc21cebee24"
   },
   {
     "name": "Jura Tempest",
@@ -35,7 +36,8 @@
         "id": "6705015340834810281",
         "baseUrl": "https://juratempe.st"
       }
-    ]
+    ],
+    "sha256": "9ceec85872c815c3c43eb2d30987a527594dbed1b4d6fcae7becb268247e72e6"
   },
   {
     "name": "Mangtto",
@@ -54,7 +56,8 @@
         "id": "6325833963641968004",
         "baseUrl": "https://mangtto.com"
       }
-    ]
+    ],
+    "sha256": "115302d3a018f75ad2f99422779dbc87e44bf145d693600a7fe56c579c2c3746"
   },
   {
     "name": "Ori Manga",
@@ -73,6 +76,7 @@
         "id": "4629101508845138320",
         "baseUrl": "https://orimanga.net"
       }
-    ]
+    ],
+    "sha256": "70a6e3bdb99a084359a670cb944a4aef6a60fdd1f03a5ba15efb62014aa650e9"
   }
 ]
