@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-feature android:name="tachiyomi.extension" />
+
     <application
-        android:label="Tachiyomi: Mangtto"
-        android:icon="@mipmap/ic_launcher">
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Tachiyomi: Mangtto">
+        <meta-data
+            android:name="tachiyomix.name"
+            android:value="Mangtto" />
         <meta-data
             android:name="tachiyomi.extension.class"
             android:value="eu.kanade.tachiyomi.extension.tr.mangtto.Mangtto" />
@@ -12,5 +18,11 @@
         <meta-data
             android:name="tachiyomi.extension.nsfw"
             android:value="0" />
+        <meta-data
+            android:name="tachiyomix.contentWarning"
+            android:value="0" />
+        <meta-data
+            android:name="tachiyomix.extensionLib"
+            android:value="1.4" />
     </application>
 </manifest>
