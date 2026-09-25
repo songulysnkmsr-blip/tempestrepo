@@ -79,7 +79,7 @@ class GolgeBahcesi : HttpSource() {
     override fun searchMangaParse(response: Response): MangasPage = parseSeriesList(response)
 
     private fun parseSeriesList(response: Response): MangasPage {
-        val json = JSONObject(response.body.string())
+        val json = JSONObject(response.body?.string().orEmpty())
         val data = json.optJSONArray("data") ?: JSONArray()
         val pagination = json.optJSONObject("pagination")
 
@@ -112,7 +112,7 @@ class GolgeBahcesi : HttpSource() {
         GET("$apiBaseUrl/series/${manga.url}", headers)
 
     override fun mangaDetailsParse(response: Response): SManga {
-        val obj = JSONObject(response.body.string())
+        val obj = JSONObject(response.body?.string().orEmpty())
         return SManga.create().apply {
             url = obj.optString("slug")
             title = obj.optString("title")
@@ -149,7 +149,7 @@ class GolgeBahcesi : HttpSource() {
         GET("$apiBaseUrl/series/${manga.url}/chapters", headers)
 
     override fun chapterListParse(response: Response): List<SChapter> {
-        val arr = JSONArray(response.body.string())
+        val arr = JSONArray(response.body?.string().orEmpty())
         val chapters = mutableListOf<SChapter>()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT).apply {
             timeZone = TimeZone.getTimeZone("UTC")
@@ -203,7 +203,7 @@ class GolgeBahcesi : HttpSource() {
     }
 
     override fun pageListParse(response: Response): List<Page> {
-        val html = response.body.string()
+        val html = response.body?.string().orEmpty()
         val pages = mutableListOf<Page>()
 
         // Search for skycdn images in chapter page

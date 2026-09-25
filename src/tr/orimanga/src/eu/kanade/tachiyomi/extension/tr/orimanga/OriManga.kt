@@ -81,7 +81,7 @@ class OriManga : HttpSource() {
     override fun searchMangaParse(response: Response): MangasPage = parseMangaJson(response)
 
     private fun parseMangaJson(response: Response): MangasPage {
-        val body = response.body.string()
+        val body = response.body?.string().orEmpty()
         if (body.isBlank() || body.startsWith("{") && body.contains("\"code\"")) {
             return MangasPage(emptyList(), false)
         }
@@ -114,7 +114,7 @@ class OriManga : HttpSource() {
 
     // Manga Details
     override fun mangaDetailsParse(response: Response): SManga {
-        val document = Jsoup.parse(response.body.string())
+        val document = Jsoup.parse(response.body?.string().orEmpty())
         val manga = SManga.create()
 
         manga.title = cleanHtmlEntities(
@@ -151,7 +151,7 @@ class OriManga : HttpSource() {
 
     // Chapter List
     override fun chapterListParse(response: Response): List<SChapter> {
-        val document = Jsoup.parse(response.body.string())
+        val document = Jsoup.parse(response.body?.string().orEmpty())
         val chapters = mutableListOf<SChapter>()
 
         val items = document.select(".chapter-list .chapter-item")
@@ -186,7 +186,7 @@ class OriManga : HttpSource() {
 
     // Page List
     override fun pageListParse(response: Response): List<Page> {
-        val document = Jsoup.parse(response.body.string())
+        val document = Jsoup.parse(response.body?.string().orEmpty())
         val images = document.select("#chapter-content img, .chapter-body img")
         val pages = mutableListOf<Page>()
 

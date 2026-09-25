@@ -44,7 +44,7 @@ class Mangtto : HttpSource() {
     }
 
     override fun popularMangaParse(response: Response): MangasPage {
-        val data = json.decodeFromString<MangttoPopularData>(response.body.string())
+        val data = json.decodeFromString<MangttoPopularData>(response.body?.string().orEmpty())
         val mangas = data.mangas.map { it.toSManga() }
         val hasNextPage = mangas.size >= 24
         return MangasPage(mangas, hasNextPage)
@@ -57,7 +57,7 @@ class Mangtto : HttpSource() {
     }
 
     override fun latestUpdatesParse(response: Response): MangasPage {
-        val data = json.decodeFromString<MangttoLatestData>(response.body.string())
+        val data = json.decodeFromString<MangttoLatestData>(response.body?.string().orEmpty())
         val mangas = data.chapters
             .mapNotNull { it.manga }
             .distinctBy { it.slug }
@@ -72,7 +72,7 @@ class Mangtto : HttpSource() {
     }
 
     override fun searchMangaParse(response: Response): MangasPage {
-        val data = json.decodeFromString<MangttoSearchData>(response.body.string())
+        val data = json.decodeFromString<MangttoSearchData>(response.body?.string().orEmpty())
         val mangas = data.hits.map { it.document.toSManga() }
         val hasNextPage = mangas.size >= 24
         return MangasPage(mangas, hasNextPage)
@@ -84,7 +84,7 @@ class Mangtto : HttpSource() {
     }
 
     override fun mangaDetailsParse(response: Response): SManga {
-        val data = json.decodeFromString<MangttoDetailData>(response.body.string())
+        val data = json.decodeFromString<MangttoDetailData>(response.body?.string().orEmpty())
         return data.toSManga()
     }
 
@@ -96,7 +96,7 @@ class Mangtto : HttpSource() {
     override fun chapterListParse(response: Response): List<SChapter> {
         val segments = response.request.url.pathSegments
         val mangaSlug = segments.getOrNull(segments.size - 2) ?: ""
-        val data = json.decodeFromString<MangttoChapterPageData>(response.body.string())
+        val data = json.decodeFromString<MangttoChapterPageData>(response.body?.string().orEmpty())
 
         return data.chapters
             .map { it.toSChapter(mangaSlug) }
@@ -112,7 +112,7 @@ class Mangtto : HttpSource() {
         val segments = response.request.url.pathSegments
         val slug = segments.getOrNull(segments.size - 2) ?: ""
         val chNum = segments.lastOrNull() ?: ""
-        val data = json.decodeFromString<MangttoPageData>(response.body.string())
+        val data = json.decodeFromString<MangttoPageData>(response.body?.string().orEmpty())
         val upload = data.uploads.firstOrNull() ?: return emptyList()
         val fansubId = upload.fansubId ?: ""
 
