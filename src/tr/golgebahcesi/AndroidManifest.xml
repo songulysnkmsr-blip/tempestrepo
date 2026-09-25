@@ -4,6 +4,7 @@
 
     <application
         android:allowBackup="false"
+        android:extractNativeLibs="false"
         android:icon="@mipmap/ic_launcher"
         android:label="Tachiyomi: Gölge Bahçesi">
         <meta-data
@@ -11,10 +12,10 @@
             android:value="Gölge Bahçesi" />
         <meta-data
             android:name="tachiyomi.extension.class"
-            android:value="eu.kanade.tachiyomi.extension.tr.golgebahcesi.GolgeBahcesi" />
+            android:value=".GolgeBahcesi" />
         <meta-data
             android:name="tachiyomi.extension.version"
-            android:value="1.4.1" />
+            android:value="1.4.2" />
         <meta-data
             android:name="tachiyomi.extension.nsfw"
             android:value="0" />

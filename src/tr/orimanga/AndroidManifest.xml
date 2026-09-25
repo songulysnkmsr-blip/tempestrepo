@@ -4,6 +4,7 @@
 
     <application
         android:allowBackup="false"
+        android:extractNativeLibs="false"
         android:icon="@mipmap/ic_launcher"
         android:label="Tachiyomi: Ori Manga">
         <meta-data
@@ -11,10 +12,10 @@
             android:value="Ori Manga" />
         <meta-data
             android:name="tachiyomi.extension.class"
-            android:value="eu.kanade.tachiyomi.extension.tr.orimanga.OriManga" />
+            android:value=".OriManga" />
         <meta-data
             android:name="tachiyomi.extension.version"
-            android:value="1.4.1" />
+            android:value="1.4.2" />
         <meta-data
             android:name="tachiyomi.extension.nsfw"
             android:value="0" />

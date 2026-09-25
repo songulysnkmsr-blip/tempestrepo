@@ -10,10 +10,10 @@ android {
 
     defaultConfig {
         applicationId = "eu.kanade.tachiyomi.extension.tr.juratempest"
-        minSdk = 21
+        minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.4.1"
+        versionCode = 140002
+        versionName = "1.4.2"
     }
 
     signingConfigs {
@@ -57,8 +57,8 @@ android {
 
 dependencies {
     compileOnly("com.github.tachiyomiorg:extensions-lib:1.4.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
-    implementation("org.jsoup:jsoup:1.17.2")
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("io.reactivex:rxjava:1.3.8")
+    compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    compileOnly("org.jsoup:jsoup:1.17.2")
+    compileOnly("com.squareup.okhttp3:okhttp:4.12.0")
+    compileOnly("io.reactivex:rxjava:1.3.8")
 }

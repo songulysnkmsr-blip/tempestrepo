@@ -112,20 +112,19 @@ def main():
         })
 
         build_gradle = ext_dir / "build.gradle.kts"
-        lib_ver = "1.4"
-        ext_ver_code = 1
+        ext_ver_code = 140002
+        version_name = "1.4.2"
 
         if build_gradle.exists():
             bg_content = build_gradle.read_text(encoding="utf-8")
-            lib_match = re.search(r'set\("libVersion",\s*"([^"]+)"\)', bg_content)
-            if lib_match:
-                lib_ver = lib_match.group(1)
-            code_match = re.search(r'set\("extVersionCode",\s*([0-9]+)\)', bg_content)
+            ver_match = re.search(r'versionName\s*=\s*"([^"]+)"', bg_content)
+            if ver_match:
+                version_name = ver_match.group(1)
+            code_match = re.search(r'versionCode\s*=\s*([0-9]+)', bg_content)
             if code_match:
                 ext_ver_code = int(code_match.group(1))
 
         pkg = f"eu.kanade.tachiyomi.extension.{meta['pkgSuffix']}"
-        version_name = f"{lib_ver}.{ext_ver_code}"
         apk_filename = f"tachiyomi-{meta['pkgSuffix']}-v{version_name}.apk"
 
         # Copy icon
