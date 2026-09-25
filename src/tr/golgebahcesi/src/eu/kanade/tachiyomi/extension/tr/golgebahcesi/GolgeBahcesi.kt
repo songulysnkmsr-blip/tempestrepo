@@ -18,7 +18,6 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
 import java.util.concurrent.TimeUnit
-import java.util.regex.Pattern
 
 class GolgeBahcesi : HttpSource() {
 
@@ -162,10 +161,17 @@ class GolgeBahcesi : HttpSource() {
             val isLocked = ch.optBoolean("isLocked", false)
             if (isLocked) continue
 
+            // Encrypted secure chapters cannot be decoded — skip them too
+            val deliverySystem = ch.optString("deliverySystem", "legacy")
+            val imageEnc = ch.optBoolean("imageEnc", false)
+            if (deliverySystem == "secure" && imageEnc) continue
+
+            val chapterId = ch.optString("id")
+
             val chapter = SChapter.create().apply {
-                val seriesSlug = ch.optString("seriesSlug")
-                val chapterSlug = ch.optString("slug")
-                url = "/$seriesSlug/$chapterSlug"
+                // Store the chapter ID for direct API lookup in pageListParse
+                // format: /chapters/<id>
+                url = "/chapters/$chapterId"
 
                 name = ch.optString("title").ifBlank { "Bölüm ${ch.optDouble("number", 0.0)}" }
                 chapter_number = ch.optDouble("number", 0.0).toFloat()
@@ -189,33 +195,37 @@ class GolgeBahcesi : HttpSource() {
     }
 
     override fun getChapterUrl(chapter: SChapter): String {
-        val segments = "$baseUrl${chapter.url}".toHttpUrl().pathSegments
-        return if (segments.size >= 2) {
-            "$baseUrl/manga/${segments[0]}/bolum/${segments[1]}"
-        } else {
-            "$baseUrl${chapter.url}"
-        }
+        // chapter.url = "/chapters/<id>"
+        // Extract seriesSlug and chapterSlug from API if needed for web URL
+        // For now return baseUrl as fallback
+        return baseUrl
     }
 
-    // Page List
+    // Page List — use /api/chapters/<id> directly (works for both legacy & secure)
     override fun pageListRequest(chapter: SChapter): Request {
-        return GET(getChapterUrl(chapter), headers)
+        // chapter.url = "/chapters/<chapterId>"
+        return GET("$apiBaseUrl${chapter.url}", headers)
     }
 
     override fun pageListParse(response: Response): List<Page> {
-        val html = response.body?.string().orEmpty()
+        val json = JSONObject(response.body?.string().orEmpty())
+        val pagesArr = json.optJSONArray("pages") ?: return emptyList()
+
+        val skycdnBase = "https://c2.skycdn.online"
         val pages = mutableListOf<Page>()
 
-        // Search for skycdn images in chapter page
-        val pattern = Pattern.compile("""https://c2\.skycdn\.online/series/[^\s"'<>]+\.(?:webp|jpg|png|jpeg)""")
-        val matcher = pattern.matcher(html)
-        val seenUrls = mutableSetOf<String>()
+        for (i in 0 until pagesArr.length()) {
+            val pageObj = pagesArr.getJSONObject(i)
+            val rawUrl = pageObj.optString("url")
+            if (rawUrl.isBlank()) continue
 
-        while (matcher.find()) {
-            val imgUrl = matcher.group()
-            if (!imgUrl.contains("series-thumbnail") && seenUrls.add(imgUrl)) {
-                pages.add(Page(pages.size, "", imgUrl))
-            }
+            // URL may be relative (e.g. "/series/.../page.webp") or absolute
+            val fullUrl = if (rawUrl.startsWith("http")) rawUrl else "$skycdnBase$rawUrl"
+
+            // Skip encrypted files (.enc)
+            if (fullUrl.endsWith(".enc")) continue
+
+            pages.add(Page(pages.size, "", fullUrl))
         }
 
         return pages

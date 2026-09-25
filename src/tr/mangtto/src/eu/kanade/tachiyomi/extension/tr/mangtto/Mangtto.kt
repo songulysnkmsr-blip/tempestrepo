@@ -109,12 +109,18 @@ class Mangtto : HttpSource() {
     }
 
     override fun pageListParse(response: Response): List<Page> {
-        val segments = response.request.url.pathSegments
-        val slug = segments.getOrNull(segments.size - 2) ?: ""
-        val chNum = segments.lastOrNull() ?: ""
         val data = json.decodeFromString<MangttoPageData>(response.body?.string().orEmpty())
         val upload = data.uploads.firstOrNull() ?: return emptyList()
-        val fansubId = upload.fansubId ?: ""
+        val fansubId = upload.fansubId ?: return emptyList()
+
+        // Extract slug and chapter number from the request URL path
+        // URL: /api/manga/<slug>/<chNum>
+        val path = response.request.url.encodedPath
+        val parts = path.trimEnd('/').split("/")
+        val slug = parts.getOrNull(parts.size - 2) ?: ""
+        val chNum = parts.lastOrNull() ?: ""
+
+        if (slug.isEmpty() || chNum.isEmpty() || fansubId.isEmpty()) return emptyList()
 
         return (1..upload.fileLength).map { i ->
             val imgUrl = "${data.cdn}/manga/$slug/$chNum/$i-$fansubId.webp"
