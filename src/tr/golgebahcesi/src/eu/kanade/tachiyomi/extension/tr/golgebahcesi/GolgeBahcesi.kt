@@ -161,13 +161,14 @@ class GolgeBahcesi : HttpSource() {
             val isLocked = ch.optBoolean("isLocked", false)
             if (isLocked) continue
 
+            val seriesSlug = ch.optString("seriesSlug")
+            val chapterSlug = ch.optString("slug")
             val chapterId = ch.optString("id")
             if (chapterId.isBlank()) continue
 
             val chapter = SChapter.create().apply {
-                // Store the chapter ID for direct API lookup in pageListParse
-                // format: /chapters/<id>
-                url = "/chapters/$chapterId"
+                // Store slugs and ID: /<seriesSlug>/<chapterSlug>/<chapterId>
+                url = "/$seriesSlug/$chapterSlug/$chapterId"
 
                 name = ch.optString("title").ifBlank { "Bölüm ${ch.optDouble("number", 0.0)}" }
                 chapter_number = ch.optDouble("number", 0.0).toFloat()
@@ -191,16 +192,21 @@ class GolgeBahcesi : HttpSource() {
     }
 
     override fun getChapterUrl(chapter: SChapter): String {
-        // chapter.url = "/chapters/<id>"
-        // Extract seriesSlug and chapterSlug from API if needed for web URL
-        // For now return baseUrl as fallback
-        return baseUrl
+        val parts = chapter.url.trim('/').split('/')
+        return if (parts.size >= 2) {
+            val series = parts[0]
+            val slug = parts[1]
+            "$baseUrl/manga/$series/bolum/$slug"
+        } else {
+            baseUrl
+        }
     }
 
-    // Page List — use /api/chapters/<id> directly (works for both legacy & secure)
+    // Page List — use /api/chapters/<id> directly
     override fun pageListRequest(chapter: SChapter): Request {
-        // chapter.url = "/chapters/<chapterId>"
-        return GET("$apiBaseUrl${chapter.url}", headers)
+        val parts = chapter.url.trim('/').split('/')
+        val chapterId = parts.lastOrNull() ?: ""
+        return GET("$apiBaseUrl/chapters/$chapterId", headers)
     }
 
     override fun pageListParse(response: Response): List<Page> {
@@ -222,6 +228,10 @@ class GolgeBahcesi : HttpSource() {
             if (fullUrl.endsWith(".enc")) continue
 
             pages.add(Page(pages.size, "", fullUrl))
+        }
+
+        if (pages.isEmpty() && pagesArr.length() > 0) {
+            throw Exception("Bu bölüm site tarafından şifrelenmiştir (DRM). Sağ üstteki Dünya/Web simgesine basarak web görünümünde okuyabilirsiniz.")
         }
 
         return pages
