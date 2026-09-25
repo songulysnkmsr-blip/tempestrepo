@@ -12,8 +12,8 @@ android {
         applicationId = "eu.kanade.tachiyomi.extension.tr.mangtto"
         minSdk = 26
         targetSdk = 34
-        versionCode = 140003
-        versionName = "1.4.3"
+        versionCode = 140004
+        versionName = "1.4.4"
     }
 
     signingConfigs {

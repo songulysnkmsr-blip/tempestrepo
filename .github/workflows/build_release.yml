@@ -32,17 +32,33 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
+      - name: Set up Python 3
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: pip install protobuf
+
       - name: Accept Android SDK Licenses
         run: |
           yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses || true
 
       - name: Make Gradle Wrapper Executable
-        run: |
-          chmod +x gradlew || true
+        run: chmod +x gradlew || true
 
-      - name: Build APKs
+      - name: Build APKs (and generate Kotlin class files)
         run: |
           ./gradlew assembleRelease --stacktrace
+
+      - name: Debug – list build outputs
+        run: |
+          echo "=== APK outputs ==="
+          find . -path "*/build/outputs/apk/release/*.apk" | head -20
+          echo "=== Kotlin class dirs ==="
+          find . -path "*/build/tmp/kotlin-classes/release" -type d | head -20
+          echo "=== First 10 .class files per extension ==="
+          find . -path "*/build/tmp/kotlin-classes/release/*.class" | head -30
 
       - name: Run Repository Index Generator
         run: |
@@ -50,8 +66,18 @@ jobs:
 
       - name: Verify build artifacts
         run: |
+          echo "=== repo/ ==="
           ls -la repo/
-          ls -la repo/apk/ || true
+          echo "=== repo/apk/ ==="
+          ls -la repo/apk/ || echo "(empty)"
+          echo "=== repo/jar/ ==="
+          ls -la repo/jar/ || echo "(empty)"
+          echo "=== repo/icon/ ==="
+          ls -la repo/icon/ || echo "(empty)"
+          echo "=== repo.json ==="
+          cat repo/repo.json
+          echo "=== index.pb size ==="
+          wc -c repo/index.pb || echo "index.pb not found"
 
       - name: Deploy to repo branch
         uses: JamesIves/github-pages-deploy-action@v4
