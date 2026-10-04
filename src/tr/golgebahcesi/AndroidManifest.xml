@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="eu.kanade.tachiyomi.extension.tr.golgebahcesi"
+    android:versionCode="140017"
+    android:versionName="1.4.17" >
+
+    <uses-sdk
+        android:minSdkVersion="26"
+        android:targetSdkVersion="34" />
+
     <uses-feature android:name="tachiyomi.extension" />
 
     <application
         android:allowBackup="false"
         android:extractNativeLibs="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="Tachiyomi: Gölge Bahçesi">
+        android:label="Tachiyomi: Gölge Bahçesi" >
         <meta-data
             android:name="tachiyomix.name"
             android:value="Gölge Bahçesi" />
         <meta-data
             android:name="tachiyomi.extension.class"
-            android:value=".GolgeBahcesi" />
+            android:value="eu.kanade.tachiyomi.extension.tr.golgebahcesi.GolgeBahcesi" />
         <meta-data
             android:name="tachiyomi.extension.version"
-            android:value="1.4.9" />
+            android:value="1.4.17" />
         <meta-data
             android:name="tachiyomi.extension.nsfw"
             android:value="0" />
@@ -26,4 +34,5 @@
             android:name="tachiyomix.extensionLib"
             android:value="1.4" />
     </application>
+
 </manifest>

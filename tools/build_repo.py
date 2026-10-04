@@ -107,7 +107,7 @@ EXTENSIONS_META = {
     },
 }
 
-RAW_BASE = "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo"
+RAW_BASE = "https://raw.githubusercontent.com/khy1see-debug/golge-repo/repo"
 
 # ─── JAR builder ─────────────────────────────────────────────────────────────
 
@@ -371,10 +371,10 @@ def main():
     index_json_path = repo_out / "index.json"
     if HAS_PROTO and proto_extensions:
         proto_index = index_pb2.Index()
-        proto_index.name       = "Tempest Repo"
-        proto_index.badgeLabel = "TR"
+        proto_index.name       = "Gölge Repo"
+        proto_index.badgeLabel = "GR"
         proto_index.signingKey = signing_fp
-        proto_index.contact.website = "https://github.com/songulysnkmsr-blip/tempestrepo"
+        proto_index.contact.website = "https://github.com/khy1see-debug/golge-repo"
         for ext in proto_extensions:
             proto_index.extensionList.extensions.append(ext)
 
@@ -402,9 +402,9 @@ def main():
     repo_json = {
         "index_v2": f"{RAW_BASE}/index.pb",
         "meta": {
-            "name": "Tempest Repo",
-            "shortName": "TR",
-            "website": "https://github.com/songulysnkmsr-blip/tempestrepo",
+            "name": "Gölge Repo",
+            "shortName": "GR",
+            "website": "https://github.com/khy1see-debug/golge-repo",
             "signingKeyFingerprint": signing_fp,
         },
     }

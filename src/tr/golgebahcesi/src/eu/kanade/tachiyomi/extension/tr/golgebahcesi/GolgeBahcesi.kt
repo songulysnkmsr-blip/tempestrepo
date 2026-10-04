@@ -1,6 +1,8 @@
 package eu.kanade.tachiyomi.extension.tr.golgebahcesi
 
+import android.webkit.CookieManager
 import eu.kanade.tachiyomi.network.GET
+import eu.kanade.tachiyomi.network.interceptor.rateLimit
 import eu.kanade.tachiyomi.source.model.FilterList
 import eu.kanade.tachiyomi.source.model.MangasPage
 import eu.kanade.tachiyomi.source.model.Page
@@ -9,7 +11,7 @@ import eu.kanade.tachiyomi.source.model.SManga
 import eu.kanade.tachiyomi.source.online.HttpSource
 import okhttp3.Headers
 import okhttp3.HttpUrl.Companion.toHttpUrl
-import okhttp3.OkHttpClient
+import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 import org.json.JSONArray
@@ -17,28 +19,76 @@ import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
-import java.util.concurrent.TimeUnit
 
 class GolgeBahcesi : HttpSource() {
 
     override val name = "Gölge Bahçesi"
-
     override val baseUrl = "https://golgebahcesi.com"
-
     private val apiBaseUrl = "https://api.golgebahcesi.com/api"
-
     override val lang = "tr"
-
     override val supportsLatest = true
 
-    override val client: OkHttpClient = network.cloudflareClient.newBuilder()
-        .connectTimeout(15, TimeUnit.SECONDS)
-        .readTimeout(30, TimeUnit.SECONDS)
+    private val cookieSyncInterceptor = Interceptor { chain ->
+        val originalRequest = chain.request()
+        val requestBuilder = originalRequest.newBuilder()
+
+        try {
+            val cookieManager = CookieManager.getInstance()
+            val mainCookies = cookieManager.getCookie(baseUrl)
+            if (!mainCookies.isNullOrBlank()) {
+                val existingCookie = originalRequest.header("Cookie")
+                val mergedCookies = if (existingCookie.isNullOrBlank()) {
+                    mainCookies
+                } else {
+                    "$existingCookie; $mainCookies"
+                }
+                requestBuilder.header("Cookie", mergedCookies)
+            }
+        } catch (_: Exception) {
+            // Ignore if CookieManager not available
+        }
+
+        val response = chain.proceed(requestBuilder.build())
+
+        if (response.code == 403) {
+            val bodyString = response.peekBody(1024).string()
+            if (bodyString.contains("challenge") || bodyString.contains("turnstile") || bodyString.contains("Just a moment")) {
+                throw Exception("Cloudflare doğrulaması gerekiyor. Lütfen seriyi WebView (küre simgesi) ile açıp doğrulamayı tamamlayın.")
+            }
+        }
+
+        response
+    }
+
+    override val client = network.cloudflareClient.newBuilder()
+        .addInterceptor(cookieSyncInterceptor)
+        .rateLimit(2)
         .build()
 
-    override fun headersBuilder(): Headers.Builder = Headers.Builder()
-        .add("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1")
+    override fun headersBuilder(): Headers.Builder = super.headersBuilder()
         .add("Referer", "$baseUrl/")
+
+    private fun getSeriesSlug(url: String): String {
+        val cleanUrl = url.substringBefore('?').substringBefore('#').trim().trim('/')
+        val extracted = when {
+            cleanUrl.contains("/manga/") -> cleanUrl.substringAfterLast("/manga/")
+            cleanUrl.contains("/series/") -> cleanUrl.substringAfterLast("/series/")
+            cleanUrl.startsWith("manga/") -> cleanUrl.removePrefix("manga/")
+            cleanUrl.startsWith("series/") -> cleanUrl.removePrefix("series/")
+            else -> cleanUrl
+        }
+        return extracted.substringBefore('/')
+    }
+
+    private fun getChapterIdentifier(url: String): String {
+        val parts = url.substringBefore('?').substringBefore('#').trim().trim('/').split('/')
+            .filterNot { it == "v3" || it == "v2" || it == "manga" || it == "bolum" || it == "series" }
+        val idPart = parts.firstOrNull { it.length == 24 && it.all { c -> c.isDigit() || c in 'a'..'f' || c in 'A'..'F' } }
+        if (idPart != null) return idPart
+        val nonIdParts = parts.filterNot { it.length == 24 && it.all { c -> c.isDigit() || c in 'a'..'f' || c in 'A'..'F' } }
+        if (nonIdParts.size >= 2) return "${nonIdParts[0]}/${nonIdParts[1]}"
+        return parts.lastOrNull() ?: url.trim('/')
+    }
 
     // Popular Manga
     override fun popularMangaRequest(page: Int): Request {
@@ -92,8 +142,9 @@ class GolgeBahcesi : HttpSource() {
         val mangas = mutableListOf<SManga>()
         for (i in 0 until data.length()) {
             val obj = data.getJSONObject(i)
+            val slug = obj.optString("slug").ifBlank { obj.optString("id") }.trim('/')
             val manga = SManga.create().apply {
-                url = obj.optString("slug")
+                url = slug
                 title = obj.optString("title")
                 thumbnail_url = obj.optString("coverImage").takeIf { it.isNotBlank() }
             }
@@ -104,15 +155,21 @@ class GolgeBahcesi : HttpSource() {
     }
 
     // Manga Details
-    override fun getMangaUrl(manga: SManga): String = "$baseUrl/manga/${manga.url}"
+    override fun getMangaUrl(manga: SManga): String {
+        val slug = getSeriesSlug(manga.url)
+        return "$baseUrl/manga/$slug"
+    }
 
-    override fun mangaDetailsRequest(manga: SManga): Request =
-        GET("$apiBaseUrl/series/${manga.url}", headers)
+    override fun mangaDetailsRequest(manga: SManga): Request {
+        val slug = getSeriesSlug(manga.url)
+        return GET("$apiBaseUrl/series/$slug", headers)
+    }
 
     override fun mangaDetailsParse(response: Response): SManga {
         val obj = JSONObject(response.body?.string().orEmpty())
         return SManga.create().apply {
-            url = obj.optString("slug")
+            val slug = obj.optString("slug").ifBlank { obj.optString("id") }.trim('/')
+            url = slug
             title = obj.optString("title")
             thumbnail_url = obj.optString("coverImage").takeIf { it.isNotBlank() }
             description = obj.optString("description").takeIf { it.isNotBlank() }
@@ -143,8 +200,10 @@ class GolgeBahcesi : HttpSource() {
     }
 
     // Chapter List
-    override fun chapterListRequest(manga: SManga): Request =
-        GET("$apiBaseUrl/series/${manga.url}/chapters", headers)
+    override fun chapterListRequest(manga: SManga): Request {
+        val slug = getSeriesSlug(manga.url)
+        return GET("$apiBaseUrl/series/$slug/chapters", headers)
+    }
 
     override fun chapterListParse(response: Response): List<SChapter> {
         val arr = JSONArray(response.body?.string().orEmpty())
@@ -156,20 +215,43 @@ class GolgeBahcesi : HttpSource() {
         for (i in 0 until arr.length()) {
             val ch = arr.getJSONObject(i)
 
-            // D-LOCKED-CHAPTERS: Yalnızca açık (ücretsiz) bölümler listelenir
-            val isLocked = ch.optBoolean("isLocked", false)
-            if (isLocked) continue
-
             val seriesSlug = ch.optString("seriesSlug")
             val chapterSlug = ch.optString("slug")
             val chapterId = ch.optString("id")
             if (chapterId.isBlank()) continue
 
-            val chapter = SChapter.create().apply {
-                // Store slugs and ID: /<seriesSlug>/<chapterSlug>/<chapterId>
-                url = "/$seriesSlug/$chapterSlug/$chapterId"
+            val isEncrypted = ch.optBoolean("imageEnc", false) || ch.optString("deliverySystem") == "secure"
 
-                name = ch.optString("title").ifBlank { "Bölüm ${ch.optDouble("number", 0.0)}" }
+            val isLocked = ch.optBoolean("isLocked", false)
+            val lockObj = ch.optJSONObject("lock")
+            val lockType = lockObj?.optString("type", "none") ?: "none"
+            val unlockAtStr = lockObj?.optString("unlockAt")
+
+            val isTimeUnlocked = if (!unlockAtStr.isNullOrBlank()) {
+                try {
+                    val cleanUnlock = if (unlockAtStr.length >= 19) unlockAtStr.substring(0, 19) else unlockAtStr
+                    dateFormat.parse(cleanUnlock)?.time?.let { System.currentTimeMillis() >= it } ?: false
+                } catch (_: Exception) {
+                    false
+                }
+            } else {
+                false
+            }
+
+            val isActuallyLocked = isLocked && lockType != "none" && !isTimeUnlocked
+
+            val rawTitle = ch.optString("title").ifBlank { "Bölüm ${ch.optDouble("number", 0.0)}" }
+
+            val displayName = when {
+                isActuallyLocked -> "🔒 $rawTitle"
+                isEncrypted -> "🌐 [Web] $rawTitle"
+                else -> rawTitle
+            }
+
+            val chapter = SChapter.create().apply {
+                // v3 prefix ensures Mihon disk cache is invalidated for all previous chapters
+                url = "/v3/$seriesSlug/$chapterSlug/$chapterId"
+                name = displayName
                 chapter_number = ch.optDouble("number", 0.0).toFloat()
 
                 val dateStr = ch.optString("releaseDate").ifBlank { ch.optString("createdAt") }
@@ -191,26 +273,59 @@ class GolgeBahcesi : HttpSource() {
     }
 
     override fun getChapterUrl(chapter: SChapter): String {
-        val parts = chapter.url.trim('/').split('/')
-        return if (parts.size >= 2) {
-            val series = parts[0]
-            val slug = parts[1]
+        val parts = chapter.url.substringBefore('?').substringBefore('#').trim('/').split('/')
+            .filterNot { it == "v3" || it == "v2" || it == "manga" || it == "bolum" || it == "series" }
+        val nonIdParts = parts.filterNot { it.length == 24 && it.all { c -> c.isDigit() || c in 'a'..'f' || c in 'A'..'F' } }
+        return if (nonIdParts.size >= 2) {
+            val series = nonIdParts[0]
+            val slug = nonIdParts[1]
             "$baseUrl/manga/$series/bolum/$slug"
+        } else if (parts.size >= 2) {
+            "$baseUrl/manga/${parts[0]}/bolum/${parts[1]}"
         } else {
             baseUrl
         }
     }
 
-    // Page List — use /api/chapters/<id> directly
+    // Page List - use /api/chapters/<id> directly
     override fun pageListRequest(chapter: SChapter): Request {
-        val parts = chapter.url.trim('/').split('/')
-        val chapterId = parts.lastOrNull() ?: ""
-        return GET("$apiBaseUrl/chapters/$chapterId", headers)
+        val chapterIdentifier = getChapterIdentifier(chapter.url)
+        return GET("$apiBaseUrl/chapters/$chapterIdentifier", headers)
     }
 
     override fun pageListParse(response: Response): List<Page> {
         val json = JSONObject(response.body?.string().orEmpty())
-        val pagesArr = json.optJSONArray("pages") ?: return emptyList()
+        val pagesArr = json.optJSONArray("pages")
+
+        val seriesSlug = json.optString("seriesSlug")
+        val chapterSlug = json.optString("slug")
+        val chapterWebUrl = if (seriesSlug.isNotBlank() && chapterSlug.isNotBlank()) {
+            "$baseUrl/manga/$seriesSlug/bolum/$chapterSlug"
+        } else {
+            baseUrl
+        }
+
+        val isLocked = json.optBoolean("isLocked", false)
+        val lockObj = json.optJSONObject("lock")
+        val lockType = lockObj?.optString("type", "none") ?: "none"
+        if (isLocked && lockType != "none") {
+            return listOf(Page(0, chapterWebUrl, chapterWebUrl))
+        }
+
+        val isEncrypted = json.optBoolean("imageEnc", false) || json.optString("deliverySystem") == "secure"
+        val hasEncryptedPages = pagesArr != null && (0 until pagesArr.length()).any {
+            pagesArr.getJSONObject(it).optString("url").contains(".enc")
+        }
+
+        // Korumalı bölümlerde tek sayfa olarak chapterWebUrl verilir.
+        // Mihon okuyucusunda 'WebView ile aç' tıklandığında skycdn yerine doğrudan sitenin bölüm sayfası açılır!
+        if (isEncrypted || hasEncryptedPages) {
+            return listOf(Page(0, chapterWebUrl, chapterWebUrl))
+        }
+
+        if (pagesArr == null || pagesArr.length() == 0) {
+            return listOf(Page(0, chapterWebUrl, chapterWebUrl))
+        }
 
         val skycdnBase = "https://c2.skycdn.online"
         val pages = mutableListOf<Page>()
@@ -218,25 +333,28 @@ class GolgeBahcesi : HttpSource() {
         for (i in 0 until pagesArr.length()) {
             val pageObj = pagesArr.getJSONObject(i)
             val rawUrl = pageObj.optString("url")
-            if (rawUrl.isBlank()) continue
+            if (rawUrl.isBlank() || rawUrl.contains(".enc")) continue
 
-            // URL may be relative (e.g. "/series/.../page.webp") or absolute
-            val fullUrl = if (rawUrl.startsWith("http")) rawUrl else "$skycdnBase$rawUrl"
+            val fullUrl = when {
+                rawUrl.startsWith("http://") || rawUrl.startsWith("https://") -> rawUrl
+                rawUrl.startsWith("//") -> "https:$rawUrl"
+                rawUrl.startsWith("/") -> "$skycdnBase$rawUrl"
+                else -> "$skycdnBase/$rawUrl"
+            }
 
-            // Skip encrypted files (.enc)
-            if (fullUrl.endsWith(".enc")) continue
-
-            pages.add(Page(pages.size, "", fullUrl))
+            pages.add(Page(pages.size, chapterWebUrl, fullUrl))
         }
 
-        if (pages.isEmpty() && pagesArr.length() > 0) {
-            throw Exception(
-                "Bu bölüm site tarafından şifrelenmiş (deliverySystem=secure). " +
-                    "Sayfalar yalnızca sitedeki WebAssembly çözücüyle açılıyor, API düz resim vermiyor.",
-            )
+        if (pages.isEmpty()) {
+            return listOf(Page(0, chapterWebUrl, chapterWebUrl))
         }
 
         return pages
+    }
+
+    override fun imageRequest(page: Page): Request {
+        val url = page.imageUrl?.takeIf { it.isNotBlank() } ?: page.url
+        return GET(url, headers)
     }
 
     override fun imageUrlParse(response: Response): String {
