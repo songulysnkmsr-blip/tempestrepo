@@ -1,6 +1,6 @@
 # Tachimanga Türkçe Manga Uzantı Deposu — proje bağlamı
 
-Revision: 19 · Yetkili kaynak: .project/state.json
+Revision: 49 · Yetkili kaynak: .project/state.json
 
 Bu görünüm türetilmiştir. Güncel kanıt kontrolü için context komutunu çalıştır.
 
@@ -39,6 +39,8 @@ Hedef kitle: Tachimanga iOS ve Mihon kullanıcıları
 - ext-orimanga (extension_module): Ori Manga Eklentisi
 - ext-golgebahcesi (extension_module): Gölge Bahçesi Eklentisi
 - release-index (repo_index): Tachimanga Uyumlu Dağıtım İndeksi
+- site-merlinscans (source_site): Merlin Scans
+- ext-merlinscans (extension_module): Merlin Scans Eklentisi
 - ext-juratempest → Uygular → site-juratempest
 - ext-mangtto → Uygular → site-mangtto
 - ext-orimanga → Uygular → site-orimanga
@@ -47,6 +49,8 @@ Hedef kitle: Tachimanga iOS ve Mihon kullanıcıları
 - release-index → Yayınlar → ext-mangtto
 - release-index → Yayınlar → ext-orimanga
 - release-index → Yayınlar → ext-golgebahcesi
+- ext-merlinscans → Uygular → site-merlinscans
+- release-index → Yayınlar → ext-merlinscans
 
 ### Somut nesne değerleri
 
@@ -59,6 +63,8 @@ Hedef kitle: Tachimanga iOS ve Mihon kullanıcıları
 - ext-orimanga: {"pkg": "eu.kanade.tachiyomi.extension.tr.orimanga", "version_code": 1}
 - ext-golgebahcesi: {"pkg": "eu.kanade.tachiyomi.extension.tr.golgebahcesi", "version_code": 1}
 - release-index: {"status": "pending"}
+- site-merlinscans: {"domain": "merlinscans.org", "engine": "wordpress_initmanga", "status": "active"}
+- ext-merlinscans: {"pkg": "eu.kanade.tachiyomi.extension.tr.merlinscans", "version_code": 140004}
 
 Türler ve bağlantı kuralları: `ontology` komutu / `ONTOLOJİ.md`.
 
@@ -75,35 +81,35 @@ Türler ve bağlantı kuralları: `ontology` komutu / `ONTOLOJİ.md`.
   - Girdiler: yok
   - Ürettiği nesneler: release-index
   - Etkin önkoşullar: yok
-  - Kabul güncelliği: güncel · tamamlanma sayısı: 1
+  - Kabul güncelliği: güncel · tamamlanma sayısı: 2
 - T-JURATEMPEST [done] Jura Tempest uzantısını geliştir (kayıt: done)
   - Ölçüt: Jura Tempest SSR sayfaları ayrıştırılıyor, bölüm ve AVIF resim akışı sağlandı.
   - İlgili nesneler: site-juratempest, ext-juratempest
   - Girdiler: site-juratempest
   - Ürettiği nesneler: ext-juratempest
   - Etkin önkoşullar: T-INIT
-  - Kabul güncelliği: güncel · tamamlanma sayısı: 1
+  - Kabul güncelliği: güncel · tamamlanma sayısı: 2
 - T-MANGTTO [done] Mangtto uzantısını geliştir ve API parametrelerini düzelt (kayıt: done)
   - Ölçüt: Mangtto JSON API istemcisi popular/latest/chapters/pages akışlarını doğru modeller.
   - İlgili nesneler: site-mangtto, ext-mangtto
   - Girdiler: site-mangtto
   - Ürettiği nesneler: ext-mangtto
   - Etkin önkoşullar: T-INIT
-  - Kabul güncelliği: güncel · tamamlanma sayısı: 1
+  - Kabul güncelliği: güncel · tamamlanma sayısı: 2
 - T-ORIMANGA [done] Ori Manga uzantısını geliştir (kayıt: done)
   - Ölçüt: Ori Manga init-manga WordPress teması ayrıştırılıyor, WebP resimler yükleniyor.
   - İlgili nesneler: site-orimanga, ext-orimanga
   - Girdiler: site-orimanga
   - Ürettiği nesneler: ext-orimanga
   - Etkin önkoşullar: T-INIT
-  - Kabul güncelliği: güncel · tamamlanma sayısı: 1
+  - Kabul güncelliği: güncel · tamamlanma sayısı: 2
 - T-GOLGEBAHCESI [done] Gölge Bahçesi uzantısını geliştir ve kilitli bölümleri filtrele (kayıt: done)
   - Ölçüt: Gölge Bahçesi API başlıkları ayarlandı, kilitli bölümler filtrelendi ve açık bölümler sağlandı.
   - İlgili nesneler: site-golgebahcesi, ext-golgebahcesi
   - Girdiler: site-golgebahcesi
   - Ürettiği nesneler: ext-golgebahcesi
   - Etkin önkoşullar: T-INIT
-  - Kabul güncelliği: güncel · tamamlanma sayısı: 1
+  - Kabul güncelliği: güncel · tamamlanma sayısı: 2
 - T-REPO-BUILD [done] Repository indeks ve APK derleme mantığını kur (kayıt: done)
   - Ölçüt: index.min.json, index.json ve repo.json Tachimanga standartlarında üretildi.
   - İlgili nesneler: release-index, ext-juratempest, ext-mangtto, ext-orimanga, ext-golgebahcesi
@@ -114,23 +120,38 @@ Türler ve bağlantı kuralları: `ontology` komutu / `ONTOLOJİ.md`.
   - Üretici bağı: ext-juratempest ← T-JURATEMPEST
   - Üretici bağı: ext-mangtto ← T-MANGTTO
   - Üretici bağı: ext-orimanga ← T-ORIMANGA
-  - Kabul güncelliği: güncel · tamamlanma sayısı: 1
-- T-GITHUB-CI [doing] GitHub Actions CI iş akışını ve GitHub repo senkronizasyonunu kur (kayıt: doing)
+  - Kabul güncelliği: güncel · tamamlanma sayısı: 2
+- T-GITHUB-CI [done] GitHub Actions CI iş akışını ve GitHub repo senkronizasyonunu kur (kayıt: done)
   - Ölçüt: GitHub Actions iş akışı tanımlandı ve GitHub deposuna senkronize edildi.
   - İlgili nesneler: release-index
   - Girdiler: release-index
   - Ürettiği nesneler: yok
-  - Etkin önkoşullar: T-REPO-BUILD, T-GOLGEBAHCESI, T-JURATEMPEST, T-MANGTTO, T-ORIMANGA, T-INIT
+  - Etkin önkoşullar: T-REPO-BUILD, T-GOLGEBAHCESI, T-JURATEMPEST, T-MANGTTO, T-MERLINSCANS, T-ORIMANGA, T-INIT
   - Üretici bağı: ext-golgebahcesi ← T-GOLGEBAHCESI
   - Üretici bağı: ext-juratempest ← T-JURATEMPEST
   - Üretici bağı: ext-mangtto ← T-MANGTTO
+  - Üretici bağı: ext-merlinscans ← T-MERLINSCANS
   - Üretici bağı: ext-orimanga ← T-ORIMANGA
   - Üretici bağı: release-index ← T-INIT
-  - Kabul güncelliği: henüz doğrulanmadı · tamamlanma sayısı: 0
+  - Kabul güncelliği: güncel · tamamlanma sayısı: 1
+- T-GOLGEBAHCESI-FIX [done] Gölge Bahçesi şifreli bölüm çökme ve URL yönlendirme sorunlarını gider (kayıt: done)
+  - Ölçüt: GolgeBahcesi.kt içinde şifreli (.enc) bölümlerde imageUrlParse UnsupportedOperationException çökmesi giderilip açıklayıcı hata mesajı, manifest yedek ucu ve doğru WebView URL yapısı (/seri/<slug>/bolum-<num>) sağlandı, Origin/Accept başlıkları eklendi ve sürüm 1.4.11'e (140011) yükseltildi.
+  - İlgili nesneler: site-golgebahcesi, ext-golgebahcesi
+  - Girdiler: site-golgebahcesi
+  - Ürettiği nesneler: yok
+  - Etkin önkoşullar: yok
+  - Kabul güncelliği: güncel · tamamlanma sayısı: 1
+- T-MERLINSCANS [done] Merlin Scans (merlinscans.org) uzantısını geliştir ve repoya ekle (kayıt: done)
+  - Ölçüt: MerlinScans.kt (WP REST API + HTML parser + data-referer CDN başlık desteği), build.gradle.kts, AndroidManifest.xml, ikonlar, settings.gradle.kts ve tools/build_repo.py kayıtları eksiksiz oluşturuldu.
+  - İlgili nesneler: site-merlinscans, ext-merlinscans
+  - Girdiler: site-merlinscans
+  - Ürettiği nesneler: ext-merlinscans
+  - Etkin önkoşullar: yok
+  - Kabul güncelliği: güncel · tamamlanma sayısı: 1
 
 ## Çalışılabilir görevler
 
-T-GITHUB-CI
+Şu anda çalışılabilir görev yok.
 
 ## Uyarılar
 

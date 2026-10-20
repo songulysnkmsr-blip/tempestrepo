@@ -105,6 +105,14 @@ EXTENSIONS_META = {
         "nsfw": 0,
         "class": "eu.kanade.tachiyomi.extension.tr.golgebahcesi.GolgeBahcesi",
     },
+    "merlinscans": {
+        "name": "Merlin Scans",
+        "lang": "tr",
+        "baseUrl": "https://merlinscans.org",
+        "pkgSuffix": "tr.merlinscans",
+        "nsfw": 0,
+        "class": "eu.kanade.tachiyomi.extension.tr.merlinscans.MerlinScans",
+    },
 }
 
 RAW_BASE = "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo"

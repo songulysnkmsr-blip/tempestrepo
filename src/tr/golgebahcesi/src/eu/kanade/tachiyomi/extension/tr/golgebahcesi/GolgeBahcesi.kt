@@ -38,7 +38,9 @@ class GolgeBahcesi : HttpSource() {
 
     override fun headersBuilder(): Headers.Builder = Headers.Builder()
         .add("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1")
+        .add("Origin", baseUrl)
         .add("Referer", "$baseUrl/")
+        .add("Accept", "application/json, text/plain, */*")
 
     // Popular Manga
     override fun popularMangaRequest(page: Int): Request {
@@ -104,7 +106,7 @@ class GolgeBahcesi : HttpSource() {
     }
 
     // Manga Details
-    override fun getMangaUrl(manga: SManga): String = "$baseUrl/manga/${manga.url}"
+    override fun getMangaUrl(manga: SManga): String = "$baseUrl/seri/${manga.url}"
 
     override fun mangaDetailsRequest(manga: SManga): Request =
         GET("$apiBaseUrl/series/${manga.url}", headers)
@@ -161,16 +163,19 @@ class GolgeBahcesi : HttpSource() {
             if (isLocked) continue
 
             val seriesSlug = ch.optString("seriesSlug")
-            val chapterSlug = ch.optString("slug")
             val chapterId = ch.optString("id")
-            if (chapterId.isBlank()) continue
+            if (chapterId.isBlank() || seriesSlug.isBlank()) continue
+
+            // Site URL'leri tam sayı bölümleri noktasız gösterir: /seri/<slug>/bolum-12
+            val numObj = ch.optDouble("number", 0.0)
+            val numStr = if (numObj % 1.0 == 0.0) numObj.toInt().toString() else numObj.toString()
 
             val chapter = SChapter.create().apply {
-                // Store slugs and ID: /<seriesSlug>/<chapterSlug>/<chapterId>
-                url = "/$seriesSlug/$chapterSlug/$chapterId"
+                // Store series slug, chapter number segment and ID: /<seriesSlug>/bolum-<numStr>/<chapterId>
+                url = "/$seriesSlug/bolum-$numStr/$chapterId"
 
-                name = ch.optString("title").ifBlank { "Bölüm ${ch.optDouble("number", 0.0)}" }
-                chapter_number = ch.optDouble("number", 0.0).toFloat()
+                name = ch.optString("title").ifBlank { "Bölüm $numStr" }
+                chapter_number = numObj.toFloat()
 
                 val dateStr = ch.optString("releaseDate").ifBlank { ch.optString("createdAt") }
                 date_upload = if (dateStr.isNotBlank()) {
@@ -195,7 +200,7 @@ class GolgeBahcesi : HttpSource() {
         return if (parts.size >= 2) {
             val series = parts[0]
             val slug = parts[1]
-            "$baseUrl/manga/$series/bolum/$slug"
+            "$baseUrl/seri/$series/$slug"
         } else {
             baseUrl
         }
@@ -209,34 +214,65 @@ class GolgeBahcesi : HttpSource() {
     }
 
     override fun pageListParse(response: Response): List<Page> {
-        val json = JSONObject(response.body?.string().orEmpty())
-        val pagesArr = json.optJSONArray("pages") ?: return emptyList()
-
         val skycdnBase = "https://c2.skycdn.online"
-        val pages = mutableListOf<Page>()
 
-        for (i in 0 until pagesArr.length()) {
-            val pageObj = pagesArr.getJSONObject(i)
-            val rawUrl = pageObj.optString("url")
-            if (rawUrl.isBlank()) continue
+        fun parsePagesArray(arr: JSONArray): Pair<List<Page>, Int> {
+            val pages = mutableListOf<Page>()
+            var encCount = 0
+            for (i in 0 until arr.length()) {
+                val rawUrl = arr.getJSONObject(i).optString("url")
+                if (rawUrl.isBlank()) { encCount++; continue }
 
-            // URL may be relative (e.g. "/series/.../page.webp") or absolute
-            val fullUrl = if (rawUrl.startsWith("http")) rawUrl else "$skycdnBase$rawUrl"
+                val fullUrl = if (rawUrl.startsWith("http")) rawUrl else "$skycdnBase$rawUrl"
 
-            // Skip encrypted files (.enc)
-            if (fullUrl.endsWith(".enc")) continue
+                if (fullUrl.endsWith(".enc")) { encCount++; continue }
 
-            pages.add(Page(pages.size, "", fullUrl))
+                pages.add(Page(pages.size, "", fullUrl))
+            }
+            return Pair(pages, encCount)
         }
 
-        if (pages.isEmpty() && pagesArr.length() > 0) {
+        val json = JSONObject(response.body?.string().orEmpty())
+        val seriesSlug = json.optString("seriesSlug")
+        val numObj = json.optDouble("number", 0.0)
+        val numStr = if (numObj % 1.0 == 0.0) numObj.toInt().toString() else numObj.toString()
+
+        val pagesArr = json.optJSONArray("pages") ?: JSONArray()
+        val (openPages, encCount) = parsePagesArray(pagesArr)
+
+        if (openPages.isNotEmpty()) return openPages
+
+        if (encCount > 0 && seriesSlug.isNotBlank() && numStr.isNotBlank()) {
+            val manifestUrl = "$apiBaseUrl/chapters/$seriesSlug/chapter-$numStr/manifest"
+            val manifestHeaders = headers.newBuilder()
+                .add("X-Client-Check", "eyJib3RkIjpmYWxzZSwiZXZ0IjoxLCJ2IjoxfQ==")
+                .build()
+            try {
+                client.newCall(GET(manifestUrl, manifestHeaders)).execute().use { manifestRes ->
+                    if (manifestRes.isSuccessful) {
+                        val manifestJson = JSONObject(manifestRes.body?.string().orEmpty())
+                        val manifestArr = manifestJson.optJSONArray("pages") ?: JSONArray()
+                        val (manifestPages, _) = parsePagesArray(manifestArr)
+                        if (manifestPages.isNotEmpty()) return manifestPages
+                    }
+                }
+            } catch (_: Exception) {
+                // fall through to error below
+            }
+        }
+
+        if (encCount > 0) {
+            val webViewUrl = if (seriesSlug.isNotBlank()) {
+                "$baseUrl/seri/$seriesSlug/bolum-$numStr"
+            } else {
+                baseUrl
+            }
             throw Exception(
-                "Bu bölüm site tarafından şifrelenmiş (deliverySystem=secure). " +
-                    "Sayfalar yalnızca sitedeki WebAssembly çözücüyle açılıyor, API düz resim vermiyor.",
+                "Bu bölüm WASM şifrelemesi (DRM) kullanıyor. Sağ üstten WebView ile açarak okuyabilirsiniz: $webViewUrl"
             )
         }
 
-        return pages
+        return emptyList()
     }
 
     override fun imageUrlParse(response: Response): String {

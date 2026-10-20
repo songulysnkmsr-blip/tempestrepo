@@ -1,6 +1,6 @@
 # Tachimanga Türkçe Manga Uzantı Deposu — Ontoloji
 
-Revizyon: 19. Canlı görünüm için `ontology` komutunu çalıştır.
+Revizyon: 49. Canlı görünüm için `ontology` komutunu çalıştır.
 
 ## Türler ve özellikler
 
@@ -33,6 +33,8 @@ Revizyon: 19. Canlı görünüm için `ontology` komutunu çalıştır.
 - **Ori Manga Eklentisi** (`ext-orimanga`, extension_module): {"pkg": "eu.kanade.tachiyomi.extension.tr.orimanga", "version_code": 1}; durum: current; üretici: T-ORIMANGA
 - **Gölge Bahçesi Eklentisi** (`ext-golgebahcesi`, extension_module): {"pkg": "eu.kanade.tachiyomi.extension.tr.golgebahcesi", "version_code": 1}; durum: current; üretici: T-GOLGEBAHCESI
 - **Tachimanga Uyumlu Dağıtım İndeksi** (`release-index`, repo_index): {"status": "pending"}; durum: current; üretici: T-INIT
+- **Merlin Scans** (`site-merlinscans`, source_site): {"domain": "merlinscans.org", "engine": "wordpress_initmanga", "status": "active"}; durum: input; üretici: dış girdi
+- **Merlin Scans Eklentisi** (`ext-merlinscans`, extension_module): {"pkg": "eu.kanade.tachiyomi.extension.tr.merlinscans", "version_code": 140004}; durum: current; üretici: T-MERLINSCANS
 
 ## Nesne haritası
 
@@ -47,6 +49,8 @@ flowchart LR
   n6["Ori Manga Eklentisi"]
   n7["Gölge Bahçesi Eklentisi"]
   n8["Tachimanga Uyumlu Dağıtım İndeksi"]
+  n9["Merlin Scans"]
+  n10["Merlin Scans Eklentisi"]
   n4 -->|"Uygular"| n0
   n5 -->|"Uygular"| n1
   n6 -->|"Uygular"| n2
@@ -55,6 +59,8 @@ flowchart LR
   n8 -->|"Yayınlar"| n5
   n8 -->|"Yayınlar"| n6
   n8 -->|"Yayınlar"| n7
+  n10 -->|"Uygular"| n9
+  n8 -->|"Yayınlar"| n10
 ```
 
 Oklar kayıtlı ilişki yönüdür; değişiklik etkisinin yönü üstte ayrıca tanımlıdır.
@@ -67,6 +73,8 @@ Oklar kayıtlı ilişki yönüdür; değişiklik etkisinin yönü üstte ayrıca
 - **T-ORIMANGA — Ori Manga uzantısını geliştir**: girdiler [site-orimanga], çıktılar [ext-orimanga], durum done.
 - **T-GOLGEBAHCESI — Gölge Bahçesi uzantısını geliştir ve kilitli bölümleri filtrele**: girdiler [site-golgebahcesi], çıktılar [ext-golgebahcesi], durum done.
 - **T-REPO-BUILD — Repository indeks ve APK derleme mantığını kur**: girdiler [ext-juratempest, ext-mangtto, ext-orimanga, ext-golgebahcesi], çıktılar [], durum done.
-- **T-GITHUB-CI — GitHub Actions CI iş akışını ve GitHub repo senkronizasyonunu kur**: girdiler [release-index], çıktılar [], durum doing.
+- **T-GITHUB-CI — GitHub Actions CI iş akışını ve GitHub repo senkronizasyonunu kur**: girdiler [release-index], çıktılar [], durum done.
+- **T-GOLGEBAHCESI-FIX — Gölge Bahçesi şifreli bölüm çökme ve URL yönlendirme sorunlarını gider**: girdiler [site-golgebahcesi], çıktılar [], durum done.
+- **T-MERLINSCANS — Merlin Scans (merlinscans.org) uzantısını geliştir ve repoya ekle**: girdiler [site-merlinscans], çıktılar [ext-merlinscans], durum done.
 
 Etki yeniden inceleme ihtiyacıdır; nesnenin yanlış olduğu hükmü değildir.

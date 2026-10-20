@@ -1,0 +1,80 @@
+{
+  "timestamp": "2026-10-20T20:47:48+03:00",
+  "title": "T-GOLGEBAHCESI-FIX — Gölge Bahçesi şifreli bölüm çökme ve URL yönlendirme sorunlarını gider",
+  "task_id": "T-GOLGEBAHCESI-FIX",
+  "consensus_verdict": "PASS",
+  "gate_passed": true,
+  "report_path": "denetim/t-golgebahcesi-fix-kontrol-raporu.md",
+  "files_inspected": [
+    "src/tr/golgebahcesi/src/eu/kanade/tachiyomi/extension/tr/golgebahcesi/GolgeBahcesi.kt",
+    "src/tr/golgebahcesi/build.gradle.kts",
+    "src/tr/golgebahcesi/AndroidManifest.xml",
+    "docs/T-GOLGEBAHCESI-FIX.md"
+  ],
+  "criteria_results": [
+    {
+      "index": 0,
+      "criterion": "GolgeBahcesi.kt içinde şifreli (.enc) bölümlerde imageUrlParse UnsupportedOperationException çökmesi giderilip açıklayıcı hata mesajı, manifest yedek ucu ve doğru WebView URL yapısı (/seri/<slug>/bolum-<num>) sağlandı, Origin/Accept başlıkları eklendi ve sürüm 1.4.11'e (140011) yükseltildi.",
+      "consensus_verdict": "PASS",
+      "glm_verdict": "PASS",
+      "glm_finding": "[0] Tam karşılandı: (1) pageListParse, boş URL ve *.enc sayfaları encCount ile izleyip açık sayfa yoksa imageUrlParse'a ulaşmadan (satır: throw Exception \"Bu bölüm WASM şifrelemesi (DRM) kullanıyor...\") okunabilir hata fırlatıyor; (2) manifest yedek ucu /api/chapters/<seriesSlug>/chapter-<numStr>/manifest, X-Client-Check başlığıyla ve try/catch + use{} bloğunda çağrılıyor, başarısızlıkta WebView hata mesajına düşüyor; (3) WebView/reader URL yapısı /seri/<slug>/bolum-<num> doğru: getMangaUrl (+getChapterUrl, pageListParse webViewUrl) noktasız tam sayı ve noktalı kesir (12.5) formunu kotlin %1.0==0 kontrolleriyle üretiyor; (4) headersBuilder'da Origin: https://golgebahcesi.com ve Accept: application/json, text/plain, */* mevcut; (5) build.gradle.kts versionCode=140011 / versionName=1.4.11 ile AndroidManifest.xml tachiyomi.extension.version=1.4.11 tutarlı.",
+      "deepseek_verdict": "PASS",
+      "deepseek_finding": "GolgeBahcesi.kt: (a) .enc/boş URL'ler parsePagesArray içinde encCount'a ayrılıp Page üretilmiyor, eski Page(0, chapterUrl, \"\") deseni kaldırıldığı için imageUrlParse UnsupportedOperationException yolu erişilemez; açık sayfa yoksa 'Bu bölüm WASM şifrelemesi (DRM) kullanıyor. Sağ üstten WebView ile açarak okuyabilirsiniz: <url>' mesajı fırlatılıyor. (b) Manifest yedeği GET(\"$apiBaseUrl/chapters/$seriesSlug/chapter-$numStr/manifest\") + X-Client-Check başlığı, isSuccessful kontrolü ve try/catch ile mevcut. (c) WebView URL'si \"$baseUrl/seri/$seriesSlug/bolum-$numStr\" (tam sayıda noktasız); getChapterUrl de /seri/<slug>/bolum-<num> üretiyor, pageListRequest son segmentten chapterId alıyor. (d) headersBuilder'da Origin=baseUrl ve Accept=application/json, text/plain, */* eklendi (Referer dahil), manifest isteği bunları miras alıyor. (e) build.gradle.kts versionCode=140011 / versionName=1.4.11 ve AndroidManifest tachiyomi.extension.version=1.4.11 ile üç yerde tutarlı. Kod eksiksiz, placeholder yok."
+    }
+  ],
+  "glm": {
+    "mode": "opencode-free",
+    "model": "opencode/glm-5.3-flash-free",
+    "verdict": "PASS",
+    "parsed": {
+      "auditor": "glm-kontrolcu",
+      "overall_verdict": "PASS",
+      "criteria": [
+        {
+          "index": 0,
+          "verdict": "PASS",
+          "finding": "[0] Tam karşılandı: (1) pageListParse, boş URL ve *.enc sayfaları encCount ile izleyip açık sayfa yoksa imageUrlParse'a ulaşmadan (satır: throw Exception \"Bu bölüm WASM şifrelemesi (DRM) kullanıyor...\") okunabilir hata fırlatıyor; (2) manifest yedek ucu /api/chapters/<seriesSlug>/chapter-<numStr>/manifest, X-Client-Check başlığıyla ve try/catch + use{} bloğunda çağrılıyor, başarısızlıkta WebView hata mesajına düşüyor; (3) WebView/reader URL yapısı /seri/<slug>/bolum-<num> doğru: getMangaUrl (+getChapterUrl, pageListParse webViewUrl) noktasız tam sayı ve noktalı kesir (12.5) formunu kotlin %1.0==0 kontrolleriyle üretiyor; (4) headersBuilder'da Origin: https://golgebahcesi.com ve Accept: application/json, text/plain, */* mevcut; (5) build.gradle.kts versionCode=140011 / versionName=1.4.11 ile AndroidManifest.xml tachiyomi.extension.version=1.4.11 tutarlı."
+        }
+      ],
+      "critical_issues": [],
+      "recommendations": [
+        "optDouble(\"number\") kirlilik/girilmiş data durumunda bolum-0 ürettebilir; manifest isteği yapılacaksa numStr.isBlank() guard'ına ek olarak numObj > 0 koşulu da eklenebilir.",
+        "pageListParse'ta JSON gövdesi ayrıştırılamazsa genel JSONException fırlıyor; okunabilir hata istisnasını yakalamak ve aynı WebView yönlendirme mesajı standartlaştırmak UX için güzel olurdu (ölçüt kırıcı değil).",
+        "Hata mesajındaki 'Sağ üstten WebView' ibaresi istemciye özgü UI diline dayanıyor; farklı okuyucu çatallarında konum değişebilir, düşük öncelikli not."
+      ]
+    },
+    "errors": []
+  },
+  "deepseek": {
+    "mode": "opencode-free",
+    "model": "opencode/deepseek-v4.1-flash-free",
+    "verdict": "PASS",
+    "parsed": {
+      "auditor": "deepseek-kontrolcu",
+      "overall_verdict": "PASS",
+      "criteria": [
+        {
+          "index": 0,
+          "verdict": "PASS",
+          "finding": "GolgeBahcesi.kt: (a) .enc/boş URL'ler parsePagesArray içinde encCount'a ayrılıp Page üretilmiyor, eski Page(0, chapterUrl, \"\") deseni kaldırıldığı için imageUrlParse UnsupportedOperationException yolu erişilemez; açık sayfa yoksa 'Bu bölüm WASM şifrelemesi (DRM) kullanıyor. Sağ üstten WebView ile açarak okuyabilirsiniz: <url>' mesajı fırlatılıyor. (b) Manifest yedeği GET(\"$apiBaseUrl/chapters/$seriesSlug/chapter-$numStr/manifest\") + X-Client-Check başlığı, isSuccessful kontrolü ve try/catch ile mevcut. (c) WebView URL'si \"$baseUrl/seri/$seriesSlug/bolum-$numStr\" (tam sayıda noktasız); getChapterUrl de /seri/<slug>/bolum-<num> üretiyor, pageListRequest son segmentten chapterId alıyor. (d) headersBuilder'da Origin=baseUrl ve Accept=application/json, text/plain, */* eklendi (Referer dahil), manifest isteği bunları miras alıyor. (e) build.gradle.kts versionCode=140011 / versionName=1.4.11 ve AndroidManifest tachiyomi.extension.version=1.4.11 ile üç yerde tutarlı. Kod eksiksiz, placeholder yok."
+        }
+      ],
+      "critical_issues": [],
+      "recommendations": [
+        "seriesSlug API yanıtında yoksa webViewUrl baseUrl'e düşüyor; slug'ı SChapter.url'den türetip pageListParse'e taşıyarak hata mesajındaki yönlendirmeyi garantileyin.",
+        "Eski sürümden kalan SChapter.url formatları için getChapterUrl'de 'bolum-' önek kontrolü ve migrasyon fallback'i ekleyin.",
+        "JSONObject/JSONArray ayrıştırmalarını boş gövde ve JSONException için try/catch veya optJSONObject ile koruyun.",
+        "Manifest ucu ve X-Client-Check sabitinin gerçekten çalıştığını canlı istek veya en azından assembleRelease çıktısıyla belgeleyin; şu an kanıt yalnız REA dokümanı.",
+        "imageUrlParse'teki kullanılmayan 'Not used.' override'ı kaldırılabilir veya neden ölü olduğu yorumla belirtilebilir.",
+        "Signing parolasını CI ortam değişkenine taşıyın (şablon varsayılanı olsa da repoda düz metin duruyor)."
+      ]
+    },
+    "errors": []
+  },
+  "orvant_submission": {
+    "submitted": true,
+    "submit_revision": 25,
+    "completed": true,
+    "complete_revision": 26
+  }
+}

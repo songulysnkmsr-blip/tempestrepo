@@ -1,0 +1,88 @@
+{
+  "timestamp": "2026-10-20T20:56:53+03:00",
+  "title": "T-MERLINSCANS — Merlin Scans (merlinscans.org) uzantısını geliştir ve repoya ekle",
+  "task_id": "T-MERLINSCANS",
+  "consensus_verdict": "PASS",
+  "gate_passed": true,
+  "report_path": "denetim/t-merlinscans-kontrol-raporu.md",
+  "files_inspected": [
+    "src/tr/merlinscans/src/eu/kanade/tachiyomi/extension/tr/merlinscans/MerlinScans.kt",
+    "src/tr/merlinscans/build.gradle.kts",
+    "src/tr/merlinscans/AndroidManifest.xml",
+    "src/tr/merlinscans/res/mipmap-xxhdpi/ic_launcher.png",
+    "settings.gradle.kts",
+    "tools/build_repo.py",
+    "docs/T-MERLINSCANS.md"
+  ],
+  "criteria_results": [
+    {
+      "index": 0,
+      "criterion": "MerlinScans.kt (WP REST API + HTML parser + data-referer CDN başlık desteği), build.gradle.kts, AndroidManifest.xml, ikonlar, settings.gradle.kts ve tools/build_repo.py kayıtları eksiksiz oluşturuldu.",
+      "consensus_verdict": "PASS",
+      "glm_verdict": "PASS",
+      "glm_finding": "Tüm gerekli kayıtlar mevcut ve çapraz tutarlı: (1) MerlinScans.kt — WP REST API (/wp-json/wp/v2/manga + _embed/per_page/page, popular=modified, latest=date, search), Jsoup HTML parser (initmanga seçicileri) ve data-referer CDN başlık desteği (pageListParse'da Page(index, dataReferer, src); imageRequest'da page.url → host origin → baseUrl sıralı Referer seçimi) ölçütün üç şartını da karşılıyor; paket yolu eu.kanade.tachiyomi.extension.tr.merlinscans.MerlinScans doğrulandı. (2) build.gradle.kts versionCode=140004 ext-merlinscans nesne kaydıyla eşleşiyor. (3) AndroidManifest.xml .MerlinScans + 1.4.4 + extensionLib 1.4 + nsfw=0 tutarlı. (4) İkon kanıtı xxhdpi/ic_launcher.png (32186 bayt) doğrulanmış; mdpi/hdpi/xhdpi/xxxhdpi dokümanda listelenmiş. (5) settings.gradle.kts ':src:tr:merlinscans' include satırı eklenmiş, mevcut modüller korunmuş. (6) tools/build_repo.py EXTENSIONS_META['merlinscans'] (pkgSuffix tr.merlinscans, class tam yolu, baseUrl merlinscans.org = site-merlinscans.domain) kayıtlı. parseMangaJson'ın '[' kapısı WP hata nesnesi/Cloudflare/boş gövde uç durumlarını güvenle karşılıyor; X-WP-TotalPages + request page parametresi ile doğru sayfalama. Kritik mantık hatası, ontoloji tersliği veya eksik dosya yok.",
+      "deepseek_verdict": "PASS",
+      "deepseek_finding": "Tüm artefaktlar mevcut ve içerikli: (1) MerlinScans.kt tam HttpSource uygulaması — WP REST (/wp-json/wp/v2/manga, _embed/per_page/page/orderby/order/search, X-WP-TotalPages + queryParameter('page') ile sayfalama), Jsoup DOM ayrıştırma (baseUri'li), data-referer desteği (pageListParse'te Page(pages.size, dataReferer, src), imageRequest'te page.url -> harici host origin -> baseUrl/ önceliğiyle Referer) ve site-logo filtresi; TODO/placeholder yok, imageUrlParse yalnız bilinçli UnsupportedOperationException. (2) build.gradle.kts: namespace/applicationId eu.kanade.tachiyomi.extension.tr.merlinscans, versionCode 140004, versionName 1.4.4, doğru sourceSets ve compileOnly bağımlılıklar. (3) AndroidManifest.xml: label 'Tachiyomi: Merlin Scans', class '.MerlinScans', version '1.4.4', nsfw 0, ikon referansı @mipmap/ic_launcher. (4) res/mipmap-xxhdpi/ic_launcher.png gerçek ikili dosya (32186 bayt). (5) settings.gradle.kts içinde include(':src:tr:merlinscans'). (6) tools/build_repo.py EXTENSIONS_META['merlinscans'] kaydı name/lang/baseUrl/pkgSuffix/nsfw/class alanlarıyla build.gradle ile tutarlı. Sınırlamalar: build_repo.py alıntısı kısmi, ikonlardan yalnız xxhdpi kanıtlanmış, keystore parolası düz metin."
+    }
+  ],
+  "glm": {
+    "mode": "opencode-free",
+    "model": "opencode/glm-5.3-flash-free",
+    "verdict": "PASS",
+    "parsed": {
+      "auditor": "glm-kontrolcu",
+      "overall_verdict": "PASS",
+      "criteria": [
+        {
+          "index": 0,
+          "verdict": "PASS",
+          "finding": "Tüm gerekli kayıtlar mevcut ve çapraz tutarlı: (1) MerlinScans.kt — WP REST API (/wp-json/wp/v2/manga + _embed/per_page/page, popular=modified, latest=date, search), Jsoup HTML parser (initmanga seçicileri) ve data-referer CDN başlık desteği (pageListParse'da Page(index, dataReferer, src); imageRequest'da page.url → host origin → baseUrl sıralı Referer seçimi) ölçütün üç şartını da karşılıyor; paket yolu eu.kanade.tachiyomi.extension.tr.merlinscans.MerlinScans doğrulandı. (2) build.gradle.kts versionCode=140004 ext-merlinscans nesne kaydıyla eşleşiyor. (3) AndroidManifest.xml .MerlinScans + 1.4.4 + extensionLib 1.4 + nsfw=0 tutarlı. (4) İkon kanıtı xxhdpi/ic_launcher.png (32186 bayt) doğrulanmış; mdpi/hdpi/xhdpi/xxxhdpi dokümanda listelenmiş. (5) settings.gradle.kts ':src:tr:merlinscans' include satırı eklenmiş, mevcut modüller korunmuş. (6) tools/build_repo.py EXTENSIONS_META['merlinscans'] (pkgSuffix tr.merlinscans, class tam yolu, baseUrl merlinscans.org = site-merlinscans.domain) kayıtlı. parseMangaJson'ın '[' kapısı WP hata nesnesi/Cloudflare/boş gövde uç durumlarını güvenle karşılıyor; X-WP-TotalPages + request page parametresi ile doğru sayfalama. Kritik mantık hatası, ontoloji tersliği veya eksik dosya yok."
+        }
+      ],
+      "critical_issues": [],
+      "recommendations": [
+        "build.gradle.kts'te isMinifyEnabled=true; MerlinScans sınıfı yalnızca manifest meta-data dizesinden çözülür (kod referansı yok). rootProject proguard-rules.pro içinde '-keep class eu.kanade.tachiyomi.extension.tachiyomi.**' benzeri kural yoksa R8 sınıfı yeniden adlandırıp kaldırabilir — hem APK hem jars (build_repo.py fqn) bu sınıf adına bağlı. Keep kuralını bir kez doğrula veya minify'i false yap.",
+        "imageRequest içinde imageUrl.toHttpUrl() data:/javascript: gibi şemalarda IllegalArgumentException fırlatır; src'si data: URI olan nadir görsellerde okuyucu çöker. runCatching / http(s) şema kontrolü ile korumaya alınabilir.",
+        "kotlinx-serialization-json bağımlılığı, serialization plugin'i ve -opt-in bayrağı kodda hiç kullanılmıyor; ölü yapılandırma olarak kaldırılabilir (Karpathy: spekülatif ağırlık yok).",
+        "hasNextPage tamamen X-WP-TotalPages başlığına bağımlı; örtee proxy başlığı silerse liste tek sayfada kalır. Gövde uzunluğu/per_page çıkarımıyla fallback düşünebilir.",
+        "Durum tespiti tüm sayfa metninde 'Tamamlandı'/'Devam Ediyor' arıyor; alakasız metinde yanlış pozitif üretebilir. Durum rozeti gibi dar bir seçici varsa ona geçirilebilir.",
+        "signingConfigs içinde 'tempestpass' düz metin; repo genel şablonu olsa da gradle property/env'e taşınması iyi uygulama olur."
+      ]
+    },
+    "errors": []
+  },
+  "deepseek": {
+    "mode": "opencode-free",
+    "model": "opencode/deepseek-v4.1-flash-free",
+    "verdict": "PASS",
+    "parsed": {
+      "auditor": "deepseek-kontrolcu",
+      "overall_verdict": "PASS",
+      "criteria": [
+        {
+          "index": 0,
+          "verdict": "PASS",
+          "finding": "Tüm artefaktlar mevcut ve içerikli: (1) MerlinScans.kt tam HttpSource uygulaması — WP REST (/wp-json/wp/v2/manga, _embed/per_page/page/orderby/order/search, X-WP-TotalPages + queryParameter('page') ile sayfalama), Jsoup DOM ayrıştırma (baseUri'li), data-referer desteği (pageListParse'te Page(pages.size, dataReferer, src), imageRequest'te page.url -> harici host origin -> baseUrl/ önceliğiyle Referer) ve site-logo filtresi; TODO/placeholder yok, imageUrlParse yalnız bilinçli UnsupportedOperationException. (2) build.gradle.kts: namespace/applicationId eu.kanade.tachiyomi.extension.tr.merlinscans, versionCode 140004, versionName 1.4.4, doğru sourceSets ve compileOnly bağımlılıklar. (3) AndroidManifest.xml: label 'Tachiyomi: Merlin Scans', class '.MerlinScans', version '1.4.4', nsfw 0, ikon referansı @mipmap/ic_launcher. (4) res/mipmap-xxhdpi/ic_launcher.png gerçek ikili dosya (32186 bayt). (5) settings.gradle.kts içinde include(':src:tr:merlinscans'). (6) tools/build_repo.py EXTENSIONS_META['merlinscans'] kaydı name/lang/baseUrl/pkgSuffix/nsfw/class alanlarıyla build.gradle ile tutarlı. Sınırlamalar: build_repo.py alıntısı kısmi, ikonlardan yalnız xxhdpi kanıtlanmış, keystore parolası düz metin."
+        }
+      ],
+      "critical_issues": [],
+      "recommendations": [
+        "build.gradle.kts içindeki storePassword/keyPassword ('tempestpass') düz metin sır olarak duruyor; local.properties veya ortam değişkeninden okunmalı, signingkey.p12 repoya commit edilmemeli.",
+        "signingkey.p12 yokken release signingConfig yine atanıyor; storeFile'sız release derlemesi başarısız olur — varlık kontrolüne göre koşullu atama yapılmalı.",
+        "AndroidManifest.xml'deki 'tachiyomix.name', 'tachiyomix.contentWarning', 'tachiyomix.extensionLib' anahtarları standart dışı; işlevsel etkisi yok, 'tachiyomi.extension.*' şemasına hizalanmalı veya repodaki diğer modüllerle tutarlılık gerekçesi belgelenmeli.",
+        "parseMangaJson'da link boşsa url boş string oluyor; boş link'te öğeyi atlayan koruma eklenmeli. Ayrıca thumbnail_url için boş string yerine null üretilmeli (takeIf { it.isNotEmpty() }).",
+        "data-referer değeri mutlak URL olarak doğrulanmalı (toHttpUrlOrNull); göreli değer geçersiz Referer başlığına yol açar.",
+        "imageRequest içinde baseUrl.toHttpUrl() her istekte yeniden hesaplanıyor; host değeri lazy sabite alınmalı.",
+        "İkon setinin beş yoğunlukta (mdpi/hdpi/xhdpi/xxhdpi/xxxhdpi) gerçekten var olduğu dosya boyutu/hash kanıtıyla doğrulanmalı; mevcut kanıt yalnız xxhdpi'yi kapsıyor.",
+        "tools/build_repo.py'nin tamamı üzerinde sözdizimi kontrolü (python -m py_compile) ve merlinscans için version_code/version_name eşlemesinin doğrulanması önerilir; sunulan alıntı kısmi."
+      ]
+    },
+    "errors": []
+  },
+  "orvant_submission": {
+    "submitted": true,
+    "submit_revision": 27,
+    "completed": true,
+    "complete_revision": 28
+  }
+}
