@@ -1,6 +1,6 @@
 # Tachimanga Türkçe Manga Uzantı Deposu — proje bağlamı
 
-Revision: 49 · Yetkili kaynak: .project/state.json
+Revision: 53 · Yetkili kaynak: .project/state.json
 
 Bu görünüm türetilmiştir. Güncel kanıt kontrolü için context komutunu çalıştır.
 
@@ -134,18 +134,30 @@ Türler ve bağlantı kuralları: `ontology` komutu / `ONTOLOJİ.md`.
   - Üretici bağı: ext-orimanga ← T-ORIMANGA
   - Üretici bağı: release-index ← T-INIT
   - Kabul güncelliği: güncel · tamamlanma sayısı: 1
-- T-GOLGEBAHCESI-FIX [done] Gölge Bahçesi şifreli bölüm çökme ve URL yönlendirme sorunlarını gider (kayıt: done)
+- T-GOLGEBAHCESI-FIX [needs_review] Gölge Bahçesi şifreli bölüm çökme ve URL yönlendirme sorunlarını gider (kayıt: done)
   - Ölçüt: GolgeBahcesi.kt içinde şifreli (.enc) bölümlerde imageUrlParse UnsupportedOperationException çökmesi giderilip açıklayıcı hata mesajı, manifest yedek ucu ve doğru WebView URL yapısı (/seri/<slug>/bolum-<num>) sağlandı, Origin/Accept başlıkları eklendi ve sürüm 1.4.11'e (140011) yükseltildi.
   - İlgili nesneler: site-golgebahcesi, ext-golgebahcesi
   - Girdiler: site-golgebahcesi
   - Ürettiği nesneler: yok
   - Etkin önkoşullar: yok
-  - Kabul güncelliği: güncel · tamamlanma sayısı: 1
+  - Kabul güncelliği: yeniden inceleme gerekli · tamamlanma sayısı: 1
+  - Kontrol: stale evidence: src/tr/golgebahcesi/src/eu/kanade/tachiyomi/extension/tr/golgebahcesi/GolgeBahcesi.kt
+  - Kontrol: stale evidence: src/tr/golgebahcesi/build.gradle.kts
+  - Kontrol: stale evidence: src/tr/golgebahcesi/AndroidManifest.xml
 - T-MERLINSCANS [done] Merlin Scans (merlinscans.org) uzantısını geliştir ve repoya ekle (kayıt: done)
   - Ölçüt: MerlinScans.kt (WP REST API + HTML parser + data-referer CDN başlık desteği), build.gradle.kts, AndroidManifest.xml, ikonlar, settings.gradle.kts ve tools/build_repo.py kayıtları eksiksiz oluşturuldu.
   - İlgili nesneler: site-merlinscans, ext-merlinscans
   - Girdiler: site-merlinscans
   - Ürettiği nesneler: ext-merlinscans
+  - Etkin önkoşullar: yok
+  - Kabul güncelliği: güncel · tamamlanma sayısı: 1
+- T-GOLGEBAHCESI-V1412 [done] Gölge Bahçesi son eklenenler sıralamasını ve DRM / WebView rotalarını düzelt (v1.4.12) (kayıt: done)
+  - Ölçüt: En son eklenenler sort=latest ile güncel bölümleri ve serileri listelemeli.
+  - Ölçüt: Kötü Avcının Mesaisi, Savaş prensesi, Umine pansiyonu, Kalbimin frekansı, Ölümüne kazanç serileri ve tüm kilitli olmayan bölümler doğru webview/bölüm URL rotasına (/manga/<series>/bolum/<slug>) yönlendirilmeli, 404 hatası vermemeli.
+  - Ölçüt: Android manifest ve build.gradle.kts v1.4.12 (140012) olarak sürüm yükseltilmeli ve kod derlenebilir olmalı.
+  - İlgili nesneler: site-golgebahcesi, ext-golgebahcesi
+  - Girdiler: site-golgebahcesi
+  - Ürettiği nesneler: yok
   - Etkin önkoşullar: yok
   - Kabul güncelliği: güncel · tamamlanma sayısı: 1
 
@@ -155,11 +167,13 @@ Türler ve bağlantı kuralları: `ontology` komutu / `ONTOLOJİ.md`.
 
 ## Uyarılar
 
-- Yok.
+- T-GOLGEBAHCESI-FIX: stale evidence: src/tr/golgebahcesi/src/eu/kanade/tachiyomi/extension/tr/golgebahcesi/GolgeBahcesi.kt
+- T-GOLGEBAHCESI-FIX: stale evidence: src/tr/golgebahcesi/build.gradle.kts
+- T-GOLGEBAHCESI-FIX: stale evidence: src/tr/golgebahcesi/AndroidManifest.xml
 
 ## Onarım işlemleri
 
 Bunlar öneridir; gerekçeyi değerlendir, actor ekle ve güncel revision ile uygula.
-- Yok.
+- reopen_task → T-GOLGEBAHCESI-FIX: Recorded completion needs review: stale evidence: src/tr/golgebahcesi/src/eu/kanade/tachiyomi/extension/tr/golgebahcesi/GolgeBahcesi.kt; stale evidence: src/tr/golgebahcesi/build.gradle.kts; stale evidence: src/tr/golgebahcesi/AndroidManifest.xml
 
 Kanıt hash'i dosya sürümünü denetler; kalite veya insan kabulünü ispatlamaz.

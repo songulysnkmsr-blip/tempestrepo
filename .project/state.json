@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "revision": 49,
+  "revision": 53,
   "project": {
     "id": "tachimanga-tr-extensions",
     "name": "Tachimanga Türkçe Manga Uzantı Deposu",
@@ -2913,6 +2913,292 @@
               "to": "site-merlinscans"
             }
           ],
+          "files": []
+        }
+      },
+      "generation": 1,
+      "review_reasons": []
+    },
+    {
+      "id": "T-GOLGEBAHCESI-V1412",
+      "title": "Gölge Bahçesi son eklenenler sıralamasını ve DRM / WebView rotalarını düzelt (v1.4.12)",
+      "status": "done",
+      "object_ids": [
+        "site-golgebahcesi",
+        "ext-golgebahcesi"
+      ],
+      "input_ids": [
+        "site-golgebahcesi"
+      ],
+      "output_ids": [],
+      "depends_on": [],
+      "decision_ids": [
+        "D-LOCKED-CHAPTERS"
+      ],
+      "acceptance": [
+        "En son eklenenler sort=latest ile güncel bölümleri ve serileri listelemeli.",
+        "Kötü Avcının Mesaisi, Savaş prensesi, Umine pansiyonu, Kalbimin frekansı, Ölümüne kazanç serileri ve tüm kilitli olmayan bölümler doğru webview/bölüm URL rotasına (/manga/<series>/bolum/<slug>) yönlendirilmeli, 404 hatası vermemeli.",
+        "Android manifest ve build.gradle.kts v1.4.12 (140012) olarak sürüm yükseltilmeli ve kod derlenebilir olmalı."
+      ],
+      "evidence": [
+        {
+          "path": "denetim/t-golgebahcesi-v1412-kontrol-raporu.md",
+          "criterion": 0,
+          "note": "Çiftli Kontrolcü (WARN): [GLM opencode/glm-5.3-flash-free -> PASS] latestUpdatesRequest açıkça sort=latest kullanıyor (popular için sort=popular ile ayrışmış); parseSeriesList data+pagination ile hasNextPage'i currentPage<totalPages üzerinden güvenli hesaplıyor. Kod ölçütle birebir uyumlu; canlı davranış docs §2.A kaydına dayanıyor. | [DeepSeek opencode/deepseek-v4.1-flash-free -> PASS] GolgeBahcesi.kt latestUpdatesRequest içinde sort=latest kullanıyor; latestUpdatesParse -> parseSeriesList data",
+          "reviewer": "glm+deepseek-kontrolcu",
+          "sha256": "b041e698c56049aece506f3dba52ade8a8f7d66ccf5ee5bbcb728c2366d47bef"
+        },
+        {
+          "path": "src/tr/golgebahcesi/src/eu/kanade/tachiyomi/extension/tr/golgebahcesi/GolgeBahcesi.kt",
+          "criterion": 0,
+          "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [0] ölçütü için doğrulanan dosya.",
+          "reviewer": "glm+deepseek-kontrolcu",
+          "sha256": "7513418b017308b6e7da3eb8beb30e01a6493073984ce7dbc5000e1e8ab91fc1"
+        },
+        {
+          "path": "src/tr/golgebahcesi/build.gradle.kts",
+          "criterion": 0,
+          "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [0] ölçütü için doğrulanan dosya.",
+          "reviewer": "glm+deepseek-kontrolcu",
+          "sha256": "00f587086eee8e6467a722b46f80f3f861008714e77d60e631546af4dbecb43e"
+        },
+        {
+          "path": "src/tr/golgebahcesi/AndroidManifest.xml",
+          "criterion": 0,
+          "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [0] ölçütü için doğrulanan dosya.",
+          "reviewer": "glm+deepseek-kontrolcu",
+          "sha256": "124e48cb81b2cb671d86b135bb58b5e78c0eeb21f9f2e6e88a01e29a58642fa5"
+        },
+        {
+          "path": "docs/T-GOLGEBAHCESI-V1412.md",
+          "criterion": 0,
+          "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [0] ölçütü için doğrulanan dosya.",
+          "reviewer": "glm+deepseek-kontrolcu",
+          "sha256": "a454056503b0f4c146d031497ec0fd7078baad44057454129ef6517700354ccb"
+        },
+        {
+          "path": "denetim/t-golgebahcesi-v1412-kontrol-raporu.md",
+          "criterion": 1,
+          "note": "Çiftli Kontrolcü (WARN): [GLM opencode/glm-5.3-flash-free -> PASS] Rota zinciri tutarlı: chapterListParse '/<series>/<slug>/<id>' saklıyor, getChapterUrl '$baseUrl/manga/<series>/bolum/<slug>' üretiyor, DRM exception'ındaki WebView URL'i aynı şablonu kullanıyor; /seri/ rotası koddan tamamen arındırılmış, isLocked filtresiyle kilitli bölümler eleniyor. 5 seri sayıları (6+49+30+115+14=214) docs §4 tablosuyla aritmetik uyumlu; 214/214 HTTP 200 kanıtı docs §4 kaydına dayanıyor, betik dosyası denetim",
+          "reviewer": "glm+deepseek-kontrolcu",
+          "sha256": "b041e698c56049aece506f3dba52ade8a8f7d66ccf5ee5bbcb728c2366d47bef"
+        },
+        {
+          "path": "src/tr/golgebahcesi/src/eu/kanade/tachiyomi/extension/tr/golgebahcesi/GolgeBahcesi.kt",
+          "criterion": 1,
+          "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [1] ölçütü için doğrulanan dosya.",
+          "reviewer": "glm+deepseek-kontrolcu",
+          "sha256": "7513418b017308b6e7da3eb8beb30e01a6493073984ce7dbc5000e1e8ab91fc1"
+        },
+        {
+          "path": "src/tr/golgebahcesi/build.gradle.kts",
+          "criterion": 1,
+          "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [1] ölçütü için doğrulanan dosya.",
+          "reviewer": "glm+deepseek-kontrolcu",
+          "sha256": "00f587086eee8e6467a722b46f80f3f861008714e77d60e631546af4dbecb43e"
+        },
+        {
+          "path": "src/tr/golgebahcesi/AndroidManifest.xml",
+          "criterion": 1,
+          "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [1] ölçütü için doğrulanan dosya.",
+          "reviewer": "glm+deepseek-kontrolcu",
+          "sha256": "124e48cb81b2cb671d86b135bb58b5e78c0eeb21f9f2e6e88a01e29a58642fa5"
+        },
+        {
+          "path": "docs/T-GOLGEBAHCESI-V1412.md",
+          "criterion": 1,
+          "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [1] ölçütü için doğrulanan dosya.",
+          "reviewer": "glm+deepseek-kontrolcu",
+          "sha256": "a454056503b0f4c146d031497ec0fd7078baad44057454129ef6517700354ccb"
+        },
+        {
+          "path": "denetim/t-golgebahcesi-v1412-kontrol-raporu.md",
+          "criterion": 2,
+          "note": "Çiftli Kontrolcü (WARN): [GLM opencode/glm-5.3-flash-free -> PASS] build.gradle.kts: versionCode=140012, versionName=1.4.12; AndroidManifest: tachiyomi.extension.version=1.4.12; docs §1 ile üçlü tutarlı. Kullanılan API'ler extensions-lib 1.4.1/okhttp 4.12.0 ile uyumlu, import seti eksiksiz; tek girinti kusuru derlemeyi etkilemez. | [DeepSeek opencode/deepseek-v4.1-flash-free -> PASS] build.gradle.kts versionCode=140012 ve versionName=1.4.12; AndroidManifest.xml meta-data tachiyomi.extension.vers",
+          "reviewer": "glm+deepseek-kontrolcu",
+          "sha256": "b041e698c56049aece506f3dba52ade8a8f7d66ccf5ee5bbcb728c2366d47bef"
+        },
+        {
+          "path": "src/tr/golgebahcesi/src/eu/kanade/tachiyomi/extension/tr/golgebahcesi/GolgeBahcesi.kt",
+          "criterion": 2,
+          "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [2] ölçütü için doğrulanan dosya.",
+          "reviewer": "glm+deepseek-kontrolcu",
+          "sha256": "7513418b017308b6e7da3eb8beb30e01a6493073984ce7dbc5000e1e8ab91fc1"
+        },
+        {
+          "path": "src/tr/golgebahcesi/build.gradle.kts",
+          "criterion": 2,
+          "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [2] ölçütü için doğrulanan dosya.",
+          "reviewer": "glm+deepseek-kontrolcu",
+          "sha256": "00f587086eee8e6467a722b46f80f3f861008714e77d60e631546af4dbecb43e"
+        },
+        {
+          "path": "src/tr/golgebahcesi/AndroidManifest.xml",
+          "criterion": 2,
+          "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [2] ölçütü için doğrulanan dosya.",
+          "reviewer": "glm+deepseek-kontrolcu",
+          "sha256": "124e48cb81b2cb671d86b135bb58b5e78c0eeb21f9f2e6e88a01e29a58642fa5"
+        },
+        {
+          "path": "docs/T-GOLGEBAHCESI-V1412.md",
+          "criterion": 2,
+          "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [2] ölçütü için doğrulanan dosya.",
+          "reviewer": "glm+deepseek-kontrolcu",
+          "sha256": "a454056503b0f4c146d031497ec0fd7078baad44057454129ef6517700354ccb"
+        }
+      ],
+      "input_snapshot": {
+        "sha256": "b02e19861a21549a6542f55418c317a7293d3f356c2322975778b99434f07f69",
+        "manifest": {
+          "graph": {
+            "inputs": [
+              "site-golgebahcesi"
+            ],
+            "objects": [
+              {
+                "id": "site-golgebahcesi",
+                "type": "source_site",
+                "properties": {
+                  "domain": "golgebahcesi.com",
+                  "status": "active",
+                  "engine": "nextjs_encrypted"
+                }
+              }
+            ],
+            "object_types": [
+              {
+                "id": "source_site",
+                "properties": {
+                  "domain": {
+                    "type": "string",
+                    "required": true,
+                    "enum": null
+                  },
+                  "status": {
+                    "type": "string",
+                    "required": true,
+                    "enum": [
+                      "active",
+                      "broken",
+                      "investigating"
+                    ]
+                  },
+                  "engine": {
+                    "type": "string",
+                    "required": true,
+                    "enum": [
+                      "solidstart_ssr",
+                      "nextjs_api",
+                      "wordpress_initmanga",
+                      "nextjs_encrypted"
+                    ]
+                  }
+                }
+              }
+            ],
+            "relation_types": [
+              {
+                "id": "implements",
+                "from_type": "extension_module",
+                "to_type": "source_site",
+                "from_min": 1,
+                "from_max": 1,
+                "to_min": 0,
+                "to_max": null,
+                "impact": "reverse"
+              }
+            ],
+            "relations": [],
+            "files": []
+          },
+          "producer_generations": {},
+          "contract": {
+            "input_fields": {},
+            "acceptance_rules": [],
+            "support_groups": []
+          }
+        }
+      },
+      "run_snapshot": {
+        "sha256": "b02e19861a21549a6542f55418c317a7293d3f356c2322975778b99434f07f69",
+        "manifest": {
+          "graph": {
+            "inputs": [
+              "site-golgebahcesi"
+            ],
+            "objects": [
+              {
+                "id": "site-golgebahcesi",
+                "type": "source_site",
+                "properties": {
+                  "domain": "golgebahcesi.com",
+                  "status": "active",
+                  "engine": "nextjs_encrypted"
+                }
+              }
+            ],
+            "object_types": [
+              {
+                "id": "source_site",
+                "properties": {
+                  "domain": {
+                    "type": "string",
+                    "required": true,
+                    "enum": null
+                  },
+                  "status": {
+                    "type": "string",
+                    "required": true,
+                    "enum": [
+                      "active",
+                      "broken",
+                      "investigating"
+                    ]
+                  },
+                  "engine": {
+                    "type": "string",
+                    "required": true,
+                    "enum": [
+                      "solidstart_ssr",
+                      "nextjs_api",
+                      "wordpress_initmanga",
+                      "nextjs_encrypted"
+                    ]
+                  }
+                }
+              }
+            ],
+            "relation_types": [
+              {
+                "id": "implements",
+                "from_type": "extension_module",
+                "to_type": "source_site",
+                "from_min": 1,
+                "from_max": 1,
+                "to_min": 0,
+                "to_max": null,
+                "impact": "reverse"
+              }
+            ],
+            "relations": [],
+            "files": []
+          },
+          "producer_generations": {},
+          "contract": {
+            "input_fields": {},
+            "acceptance_rules": [],
+            "support_groups": []
+          }
+        }
+      },
+      "output_snapshot": {
+        "sha256": "5be4e3c99f05c10c081b279674e4a4da11ce339c86efcd152c698e0f08b68054",
+        "manifest": {
+          "inputs": [],
+          "objects": [],
+          "object_types": [],
+          "relation_types": [],
+          "relations": [],
           "files": []
         }
       },
@@ -24840,6 +25126,1210 @@
                 }
               },
               "support_snapshot": null
+            }
+          }
+        ]
+      }
+    },
+    {
+      "revision": 50,
+      "action": "extend_model",
+      "actor": "agent",
+      "reason": "Gölge Bahçesi son eklenenler sıralamasını ve DRM / WebView bölüm açılma rotalarını düzeltme görevi ekleniyor.",
+      "change": {
+        "objects": [],
+        "relations": [],
+        "tasks": [
+          {
+            "id": "T-GOLGEBAHCESI-V1412",
+            "title": "Gölge Bahçesi son eklenenler sıralamasını ve DRM / WebView rotalarını düzelt (v1.4.12)",
+            "status": "todo",
+            "object_ids": [
+              "site-golgebahcesi",
+              "ext-golgebahcesi"
+            ],
+            "input_ids": [
+              "site-golgebahcesi"
+            ],
+            "output_ids": [],
+            "depends_on": [],
+            "decision_ids": [
+              "D-LOCKED-CHAPTERS"
+            ],
+            "acceptance": [
+              "En son eklenenler sort=latest ile güncel bölümleri ve serileri listelemeli.",
+              "Kötü Avcının Mesaisi, Savaş prensesi, Umine pansiyonu, Kalbimin frekansı, Ölümüne kazanç serileri ve tüm kilitli olmayan bölümler doğru webview/bölüm URL rotasına (/manga/<series>/bolum/<slug>) yönlendirilmeli, 404 hatası vermemeli.",
+              "Android manifest ve build.gradle.kts v1.4.12 (140012) olarak sürüm yükseltilmeli ve kod derlenebilir olmalı."
+            ],
+            "evidence": [],
+            "input_snapshot": null,
+            "run_snapshot": null,
+            "output_snapshot": null,
+            "generation": 0,
+            "review_reasons": []
+          }
+        ],
+        "impact": {
+          "changed_objects": [],
+          "changed_relations": [],
+          "affected_objects": [],
+          "paths": {},
+          "affected_tasks": []
+        },
+        "task_changes": [
+          {
+            "task_id": "T-GOLGEBAHCESI-V1412",
+            "before": null,
+            "after": {
+              "id": "T-GOLGEBAHCESI-V1412",
+              "title": "Gölge Bahçesi son eklenenler sıralamasını ve DRM / WebView rotalarını düzelt (v1.4.12)",
+              "status": "todo",
+              "object_ids": [
+                "site-golgebahcesi",
+                "ext-golgebahcesi"
+              ],
+              "input_ids": [
+                "site-golgebahcesi"
+              ],
+              "output_ids": [],
+              "depends_on": [],
+              "decision_ids": [
+                "D-LOCKED-CHAPTERS"
+              ],
+              "acceptance": [
+                "En son eklenenler sort=latest ile güncel bölümleri ve serileri listelemeli.",
+                "Kötü Avcının Mesaisi, Savaş prensesi, Umine pansiyonu, Kalbimin frekansı, Ölümüne kazanç serileri ve tüm kilitli olmayan bölümler doğru webview/bölüm URL rotasına (/manga/<series>/bolum/<slug>) yönlendirilmeli, 404 hatası vermemeli.",
+                "Android manifest ve build.gradle.kts v1.4.12 (140012) olarak sürüm yükseltilmeli ve kod derlenebilir olmalı."
+              ],
+              "evidence": [],
+              "input_snapshot": null,
+              "run_snapshot": null,
+              "output_snapshot": null,
+              "generation": 0,
+              "review_reasons": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "revision": 51,
+      "action": "start_task",
+      "actor": "agent",
+      "reason": "T-GOLGEBAHCESI-V1412 görevi başlatılıyor.",
+      "change": {
+        "task_changes": [
+          {
+            "task_id": "T-GOLGEBAHCESI-V1412",
+            "before": {
+              "id": "T-GOLGEBAHCESI-V1412",
+              "title": "Gölge Bahçesi son eklenenler sıralamasını ve DRM / WebView rotalarını düzelt (v1.4.12)",
+              "status": "todo",
+              "object_ids": [
+                "site-golgebahcesi",
+                "ext-golgebahcesi"
+              ],
+              "input_ids": [
+                "site-golgebahcesi"
+              ],
+              "output_ids": [],
+              "depends_on": [],
+              "decision_ids": [
+                "D-LOCKED-CHAPTERS"
+              ],
+              "acceptance": [
+                "En son eklenenler sort=latest ile güncel bölümleri ve serileri listelemeli.",
+                "Kötü Avcının Mesaisi, Savaş prensesi, Umine pansiyonu, Kalbimin frekansı, Ölümüne kazanç serileri ve tüm kilitli olmayan bölümler doğru webview/bölüm URL rotasına (/manga/<series>/bolum/<slug>) yönlendirilmeli, 404 hatası vermemeli.",
+                "Android manifest ve build.gradle.kts v1.4.12 (140012) olarak sürüm yükseltilmeli ve kod derlenebilir olmalı."
+              ],
+              "evidence": [],
+              "input_snapshot": null,
+              "run_snapshot": null,
+              "output_snapshot": null,
+              "generation": 0,
+              "review_reasons": []
+            },
+            "after": {
+              "id": "T-GOLGEBAHCESI-V1412",
+              "title": "Gölge Bahçesi son eklenenler sıralamasını ve DRM / WebView rotalarını düzelt (v1.4.12)",
+              "status": "doing",
+              "object_ids": [
+                "site-golgebahcesi",
+                "ext-golgebahcesi"
+              ],
+              "input_ids": [
+                "site-golgebahcesi"
+              ],
+              "output_ids": [],
+              "depends_on": [],
+              "decision_ids": [
+                "D-LOCKED-CHAPTERS"
+              ],
+              "acceptance": [
+                "En son eklenenler sort=latest ile güncel bölümleri ve serileri listelemeli.",
+                "Kötü Avcının Mesaisi, Savaş prensesi, Umine pansiyonu, Kalbimin frekansı, Ölümüne kazanç serileri ve tüm kilitli olmayan bölümler doğru webview/bölüm URL rotasına (/manga/<series>/bolum/<slug>) yönlendirilmeli, 404 hatası vermemeli.",
+                "Android manifest ve build.gradle.kts v1.4.12 (140012) olarak sürüm yükseltilmeli ve kod derlenebilir olmalı."
+              ],
+              "evidence": [],
+              "input_snapshot": null,
+              "run_snapshot": {
+                "sha256": "b02e19861a21549a6542f55418c317a7293d3f356c2322975778b99434f07f69",
+                "manifest": {
+                  "graph": {
+                    "inputs": [
+                      "site-golgebahcesi"
+                    ],
+                    "objects": [
+                      {
+                        "id": "site-golgebahcesi",
+                        "type": "source_site",
+                        "properties": {
+                          "domain": "golgebahcesi.com",
+                          "status": "active",
+                          "engine": "nextjs_encrypted"
+                        }
+                      }
+                    ],
+                    "object_types": [
+                      {
+                        "id": "source_site",
+                        "properties": {
+                          "domain": {
+                            "type": "string",
+                            "required": true,
+                            "enum": null
+                          },
+                          "status": {
+                            "type": "string",
+                            "required": true,
+                            "enum": [
+                              "active",
+                              "broken",
+                              "investigating"
+                            ]
+                          },
+                          "engine": {
+                            "type": "string",
+                            "required": true,
+                            "enum": [
+                              "solidstart_ssr",
+                              "nextjs_api",
+                              "wordpress_initmanga",
+                              "nextjs_encrypted"
+                            ]
+                          }
+                        }
+                      }
+                    ],
+                    "relation_types": [
+                      {
+                        "id": "implements",
+                        "from_type": "extension_module",
+                        "to_type": "source_site",
+                        "from_min": 1,
+                        "from_max": 1,
+                        "to_min": 0,
+                        "to_max": null,
+                        "impact": "reverse"
+                      }
+                    ],
+                    "relations": [],
+                    "files": []
+                  },
+                  "producer_generations": {},
+                  "contract": {
+                    "input_fields": {},
+                    "acceptance_rules": [],
+                    "support_groups": []
+                  }
+                }
+              },
+              "output_snapshot": null,
+              "generation": 0,
+              "review_reasons": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "revision": 52,
+      "action": "submit_evidence",
+      "actor": "agent",
+      "reason": "GLM (WARN) ve DeepSeek (WARN) kontrolcü alt ajanlarının ortak onayıyla kanıt sunuldu.",
+      "change": {
+        "task_changes": [
+          {
+            "task_id": "T-GOLGEBAHCESI-V1412",
+            "before": {
+              "id": "T-GOLGEBAHCESI-V1412",
+              "title": "Gölge Bahçesi son eklenenler sıralamasını ve DRM / WebView rotalarını düzelt (v1.4.12)",
+              "status": "doing",
+              "object_ids": [
+                "site-golgebahcesi",
+                "ext-golgebahcesi"
+              ],
+              "input_ids": [
+                "site-golgebahcesi"
+              ],
+              "output_ids": [],
+              "depends_on": [],
+              "decision_ids": [
+                "D-LOCKED-CHAPTERS"
+              ],
+              "acceptance": [
+                "En son eklenenler sort=latest ile güncel bölümleri ve serileri listelemeli.",
+                "Kötü Avcının Mesaisi, Savaş prensesi, Umine pansiyonu, Kalbimin frekansı, Ölümüne kazanç serileri ve tüm kilitli olmayan bölümler doğru webview/bölüm URL rotasına (/manga/<series>/bolum/<slug>) yönlendirilmeli, 404 hatası vermemeli.",
+                "Android manifest ve build.gradle.kts v1.4.12 (140012) olarak sürüm yükseltilmeli ve kod derlenebilir olmalı."
+              ],
+              "evidence": [],
+              "input_snapshot": null,
+              "run_snapshot": {
+                "sha256": "b02e19861a21549a6542f55418c317a7293d3f356c2322975778b99434f07f69",
+                "manifest": {
+                  "graph": {
+                    "inputs": [
+                      "site-golgebahcesi"
+                    ],
+                    "objects": [
+                      {
+                        "id": "site-golgebahcesi",
+                        "type": "source_site",
+                        "properties": {
+                          "domain": "golgebahcesi.com",
+                          "status": "active",
+                          "engine": "nextjs_encrypted"
+                        }
+                      }
+                    ],
+                    "object_types": [
+                      {
+                        "id": "source_site",
+                        "properties": {
+                          "domain": {
+                            "type": "string",
+                            "required": true,
+                            "enum": null
+                          },
+                          "status": {
+                            "type": "string",
+                            "required": true,
+                            "enum": [
+                              "active",
+                              "broken",
+                              "investigating"
+                            ]
+                          },
+                          "engine": {
+                            "type": "string",
+                            "required": true,
+                            "enum": [
+                              "solidstart_ssr",
+                              "nextjs_api",
+                              "wordpress_initmanga",
+                              "nextjs_encrypted"
+                            ]
+                          }
+                        }
+                      }
+                    ],
+                    "relation_types": [
+                      {
+                        "id": "implements",
+                        "from_type": "extension_module",
+                        "to_type": "source_site",
+                        "from_min": 1,
+                        "from_max": 1,
+                        "to_min": 0,
+                        "to_max": null,
+                        "impact": "reverse"
+                      }
+                    ],
+                    "relations": [],
+                    "files": []
+                  },
+                  "producer_generations": {},
+                  "contract": {
+                    "input_fields": {},
+                    "acceptance_rules": [],
+                    "support_groups": []
+                  }
+                }
+              },
+              "output_snapshot": null,
+              "generation": 0,
+              "review_reasons": []
+            },
+            "after": {
+              "id": "T-GOLGEBAHCESI-V1412",
+              "title": "Gölge Bahçesi son eklenenler sıralamasını ve DRM / WebView rotalarını düzelt (v1.4.12)",
+              "status": "review",
+              "object_ids": [
+                "site-golgebahcesi",
+                "ext-golgebahcesi"
+              ],
+              "input_ids": [
+                "site-golgebahcesi"
+              ],
+              "output_ids": [],
+              "depends_on": [],
+              "decision_ids": [
+                "D-LOCKED-CHAPTERS"
+              ],
+              "acceptance": [
+                "En son eklenenler sort=latest ile güncel bölümleri ve serileri listelemeli.",
+                "Kötü Avcının Mesaisi, Savaş prensesi, Umine pansiyonu, Kalbimin frekansı, Ölümüne kazanç serileri ve tüm kilitli olmayan bölümler doğru webview/bölüm URL rotasına (/manga/<series>/bolum/<slug>) yönlendirilmeli, 404 hatası vermemeli.",
+                "Android manifest ve build.gradle.kts v1.4.12 (140012) olarak sürüm yükseltilmeli ve kod derlenebilir olmalı."
+              ],
+              "evidence": [
+                {
+                  "path": "denetim/t-golgebahcesi-v1412-kontrol-raporu.md",
+                  "criterion": 0,
+                  "note": "Çiftli Kontrolcü (WARN): [GLM opencode/glm-5.3-flash-free -> PASS] latestUpdatesRequest açıkça sort=latest kullanıyor (popular için sort=popular ile ayrışmış); parseSeriesList data+pagination ile hasNextPage'i currentPage<totalPages üzerinden güvenli hesaplıyor. Kod ölçütle birebir uyumlu; canlı davranış docs §2.A kaydına dayanıyor. | [DeepSeek opencode/deepseek-v4.1-flash-free -> PASS] GolgeBahcesi.kt latestUpdatesRequest içinde sort=latest kullanıyor; latestUpdatesParse -> parseSeriesList data",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "b041e698c56049aece506f3dba52ade8a8f7d66ccf5ee5bbcb728c2366d47bef"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/src/eu/kanade/tachiyomi/extension/tr/golgebahcesi/GolgeBahcesi.kt",
+                  "criterion": 0,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [0] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "7513418b017308b6e7da3eb8beb30e01a6493073984ce7dbc5000e1e8ab91fc1"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/build.gradle.kts",
+                  "criterion": 0,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [0] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "00f587086eee8e6467a722b46f80f3f861008714e77d60e631546af4dbecb43e"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/AndroidManifest.xml",
+                  "criterion": 0,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [0] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "124e48cb81b2cb671d86b135bb58b5e78c0eeb21f9f2e6e88a01e29a58642fa5"
+                },
+                {
+                  "path": "docs/T-GOLGEBAHCESI-V1412.md",
+                  "criterion": 0,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [0] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "a454056503b0f4c146d031497ec0fd7078baad44057454129ef6517700354ccb"
+                },
+                {
+                  "path": "denetim/t-golgebahcesi-v1412-kontrol-raporu.md",
+                  "criterion": 1,
+                  "note": "Çiftli Kontrolcü (WARN): [GLM opencode/glm-5.3-flash-free -> PASS] Rota zinciri tutarlı: chapterListParse '/<series>/<slug>/<id>' saklıyor, getChapterUrl '$baseUrl/manga/<series>/bolum/<slug>' üretiyor, DRM exception'ındaki WebView URL'i aynı şablonu kullanıyor; /seri/ rotası koddan tamamen arındırılmış, isLocked filtresiyle kilitli bölümler eleniyor. 5 seri sayıları (6+49+30+115+14=214) docs §4 tablosuyla aritmetik uyumlu; 214/214 HTTP 200 kanıtı docs §4 kaydına dayanıyor, betik dosyası denetim",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "b041e698c56049aece506f3dba52ade8a8f7d66ccf5ee5bbcb728c2366d47bef"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/src/eu/kanade/tachiyomi/extension/tr/golgebahcesi/GolgeBahcesi.kt",
+                  "criterion": 1,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [1] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "7513418b017308b6e7da3eb8beb30e01a6493073984ce7dbc5000e1e8ab91fc1"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/build.gradle.kts",
+                  "criterion": 1,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [1] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "00f587086eee8e6467a722b46f80f3f861008714e77d60e631546af4dbecb43e"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/AndroidManifest.xml",
+                  "criterion": 1,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [1] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "124e48cb81b2cb671d86b135bb58b5e78c0eeb21f9f2e6e88a01e29a58642fa5"
+                },
+                {
+                  "path": "docs/T-GOLGEBAHCESI-V1412.md",
+                  "criterion": 1,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [1] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "a454056503b0f4c146d031497ec0fd7078baad44057454129ef6517700354ccb"
+                },
+                {
+                  "path": "denetim/t-golgebahcesi-v1412-kontrol-raporu.md",
+                  "criterion": 2,
+                  "note": "Çiftli Kontrolcü (WARN): [GLM opencode/glm-5.3-flash-free -> PASS] build.gradle.kts: versionCode=140012, versionName=1.4.12; AndroidManifest: tachiyomi.extension.version=1.4.12; docs §1 ile üçlü tutarlı. Kullanılan API'ler extensions-lib 1.4.1/okhttp 4.12.0 ile uyumlu, import seti eksiksiz; tek girinti kusuru derlemeyi etkilemez. | [DeepSeek opencode/deepseek-v4.1-flash-free -> PASS] build.gradle.kts versionCode=140012 ve versionName=1.4.12; AndroidManifest.xml meta-data tachiyomi.extension.vers",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "b041e698c56049aece506f3dba52ade8a8f7d66ccf5ee5bbcb728c2366d47bef"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/src/eu/kanade/tachiyomi/extension/tr/golgebahcesi/GolgeBahcesi.kt",
+                  "criterion": 2,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [2] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "7513418b017308b6e7da3eb8beb30e01a6493073984ce7dbc5000e1e8ab91fc1"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/build.gradle.kts",
+                  "criterion": 2,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [2] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "00f587086eee8e6467a722b46f80f3f861008714e77d60e631546af4dbecb43e"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/AndroidManifest.xml",
+                  "criterion": 2,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [2] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "124e48cb81b2cb671d86b135bb58b5e78c0eeb21f9f2e6e88a01e29a58642fa5"
+                },
+                {
+                  "path": "docs/T-GOLGEBAHCESI-V1412.md",
+                  "criterion": 2,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [2] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "a454056503b0f4c146d031497ec0fd7078baad44057454129ef6517700354ccb"
+                }
+              ],
+              "input_snapshot": {
+                "sha256": "b02e19861a21549a6542f55418c317a7293d3f356c2322975778b99434f07f69",
+                "manifest": {
+                  "graph": {
+                    "inputs": [
+                      "site-golgebahcesi"
+                    ],
+                    "objects": [
+                      {
+                        "id": "site-golgebahcesi",
+                        "type": "source_site",
+                        "properties": {
+                          "domain": "golgebahcesi.com",
+                          "status": "active",
+                          "engine": "nextjs_encrypted"
+                        }
+                      }
+                    ],
+                    "object_types": [
+                      {
+                        "id": "source_site",
+                        "properties": {
+                          "domain": {
+                            "type": "string",
+                            "required": true,
+                            "enum": null
+                          },
+                          "status": {
+                            "type": "string",
+                            "required": true,
+                            "enum": [
+                              "active",
+                              "broken",
+                              "investigating"
+                            ]
+                          },
+                          "engine": {
+                            "type": "string",
+                            "required": true,
+                            "enum": [
+                              "solidstart_ssr",
+                              "nextjs_api",
+                              "wordpress_initmanga",
+                              "nextjs_encrypted"
+                            ]
+                          }
+                        }
+                      }
+                    ],
+                    "relation_types": [
+                      {
+                        "id": "implements",
+                        "from_type": "extension_module",
+                        "to_type": "source_site",
+                        "from_min": 1,
+                        "from_max": 1,
+                        "to_min": 0,
+                        "to_max": null,
+                        "impact": "reverse"
+                      }
+                    ],
+                    "relations": [],
+                    "files": []
+                  },
+                  "producer_generations": {},
+                  "contract": {
+                    "input_fields": {},
+                    "acceptance_rules": [],
+                    "support_groups": []
+                  }
+                }
+              },
+              "run_snapshot": {
+                "sha256": "b02e19861a21549a6542f55418c317a7293d3f356c2322975778b99434f07f69",
+                "manifest": {
+                  "graph": {
+                    "inputs": [
+                      "site-golgebahcesi"
+                    ],
+                    "objects": [
+                      {
+                        "id": "site-golgebahcesi",
+                        "type": "source_site",
+                        "properties": {
+                          "domain": "golgebahcesi.com",
+                          "status": "active",
+                          "engine": "nextjs_encrypted"
+                        }
+                      }
+                    ],
+                    "object_types": [
+                      {
+                        "id": "source_site",
+                        "properties": {
+                          "domain": {
+                            "type": "string",
+                            "required": true,
+                            "enum": null
+                          },
+                          "status": {
+                            "type": "string",
+                            "required": true,
+                            "enum": [
+                              "active",
+                              "broken",
+                              "investigating"
+                            ]
+                          },
+                          "engine": {
+                            "type": "string",
+                            "required": true,
+                            "enum": [
+                              "solidstart_ssr",
+                              "nextjs_api",
+                              "wordpress_initmanga",
+                              "nextjs_encrypted"
+                            ]
+                          }
+                        }
+                      }
+                    ],
+                    "relation_types": [
+                      {
+                        "id": "implements",
+                        "from_type": "extension_module",
+                        "to_type": "source_site",
+                        "from_min": 1,
+                        "from_max": 1,
+                        "to_min": 0,
+                        "to_max": null,
+                        "impact": "reverse"
+                      }
+                    ],
+                    "relations": [],
+                    "files": []
+                  },
+                  "producer_generations": {},
+                  "contract": {
+                    "input_fields": {},
+                    "acceptance_rules": [],
+                    "support_groups": []
+                  }
+                }
+              },
+              "output_snapshot": {
+                "sha256": "5be4e3c99f05c10c081b279674e4a4da11ce339c86efcd152c698e0f08b68054",
+                "manifest": {
+                  "inputs": [],
+                  "objects": [],
+                  "object_types": [],
+                  "relation_types": [],
+                  "relations": [],
+                  "files": []
+                }
+              },
+              "generation": 0,
+              "review_reasons": []
+            }
+          }
+        ]
+      }
+    },
+    {
+      "revision": 53,
+      "action": "complete_task",
+      "actor": "agent",
+      "reason": "GLM ve DeepSeek çiftli kontrolcü denetiminden geçti (WARN); görev tamamlandı.",
+      "change": {
+        "task_changes": [
+          {
+            "task_id": "T-GOLGEBAHCESI-V1412",
+            "before": {
+              "id": "T-GOLGEBAHCESI-V1412",
+              "title": "Gölge Bahçesi son eklenenler sıralamasını ve DRM / WebView rotalarını düzelt (v1.4.12)",
+              "status": "review",
+              "object_ids": [
+                "site-golgebahcesi",
+                "ext-golgebahcesi"
+              ],
+              "input_ids": [
+                "site-golgebahcesi"
+              ],
+              "output_ids": [],
+              "depends_on": [],
+              "decision_ids": [
+                "D-LOCKED-CHAPTERS"
+              ],
+              "acceptance": [
+                "En son eklenenler sort=latest ile güncel bölümleri ve serileri listelemeli.",
+                "Kötü Avcının Mesaisi, Savaş prensesi, Umine pansiyonu, Kalbimin frekansı, Ölümüne kazanç serileri ve tüm kilitli olmayan bölümler doğru webview/bölüm URL rotasına (/manga/<series>/bolum/<slug>) yönlendirilmeli, 404 hatası vermemeli.",
+                "Android manifest ve build.gradle.kts v1.4.12 (140012) olarak sürüm yükseltilmeli ve kod derlenebilir olmalı."
+              ],
+              "evidence": [
+                {
+                  "path": "denetim/t-golgebahcesi-v1412-kontrol-raporu.md",
+                  "criterion": 0,
+                  "note": "Çiftli Kontrolcü (WARN): [GLM opencode/glm-5.3-flash-free -> PASS] latestUpdatesRequest açıkça sort=latest kullanıyor (popular için sort=popular ile ayrışmış); parseSeriesList data+pagination ile hasNextPage'i currentPage<totalPages üzerinden güvenli hesaplıyor. Kod ölçütle birebir uyumlu; canlı davranış docs §2.A kaydına dayanıyor. | [DeepSeek opencode/deepseek-v4.1-flash-free -> PASS] GolgeBahcesi.kt latestUpdatesRequest içinde sort=latest kullanıyor; latestUpdatesParse -> parseSeriesList data",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "b041e698c56049aece506f3dba52ade8a8f7d66ccf5ee5bbcb728c2366d47bef"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/src/eu/kanade/tachiyomi/extension/tr/golgebahcesi/GolgeBahcesi.kt",
+                  "criterion": 0,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [0] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "7513418b017308b6e7da3eb8beb30e01a6493073984ce7dbc5000e1e8ab91fc1"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/build.gradle.kts",
+                  "criterion": 0,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [0] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "00f587086eee8e6467a722b46f80f3f861008714e77d60e631546af4dbecb43e"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/AndroidManifest.xml",
+                  "criterion": 0,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [0] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "124e48cb81b2cb671d86b135bb58b5e78c0eeb21f9f2e6e88a01e29a58642fa5"
+                },
+                {
+                  "path": "docs/T-GOLGEBAHCESI-V1412.md",
+                  "criterion": 0,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [0] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "a454056503b0f4c146d031497ec0fd7078baad44057454129ef6517700354ccb"
+                },
+                {
+                  "path": "denetim/t-golgebahcesi-v1412-kontrol-raporu.md",
+                  "criterion": 1,
+                  "note": "Çiftli Kontrolcü (WARN): [GLM opencode/glm-5.3-flash-free -> PASS] Rota zinciri tutarlı: chapterListParse '/<series>/<slug>/<id>' saklıyor, getChapterUrl '$baseUrl/manga/<series>/bolum/<slug>' üretiyor, DRM exception'ındaki WebView URL'i aynı şablonu kullanıyor; /seri/ rotası koddan tamamen arındırılmış, isLocked filtresiyle kilitli bölümler eleniyor. 5 seri sayıları (6+49+30+115+14=214) docs §4 tablosuyla aritmetik uyumlu; 214/214 HTTP 200 kanıtı docs §4 kaydına dayanıyor, betik dosyası denetim",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "b041e698c56049aece506f3dba52ade8a8f7d66ccf5ee5bbcb728c2366d47bef"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/src/eu/kanade/tachiyomi/extension/tr/golgebahcesi/GolgeBahcesi.kt",
+                  "criterion": 1,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [1] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "7513418b017308b6e7da3eb8beb30e01a6493073984ce7dbc5000e1e8ab91fc1"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/build.gradle.kts",
+                  "criterion": 1,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [1] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "00f587086eee8e6467a722b46f80f3f861008714e77d60e631546af4dbecb43e"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/AndroidManifest.xml",
+                  "criterion": 1,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [1] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "124e48cb81b2cb671d86b135bb58b5e78c0eeb21f9f2e6e88a01e29a58642fa5"
+                },
+                {
+                  "path": "docs/T-GOLGEBAHCESI-V1412.md",
+                  "criterion": 1,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [1] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "a454056503b0f4c146d031497ec0fd7078baad44057454129ef6517700354ccb"
+                },
+                {
+                  "path": "denetim/t-golgebahcesi-v1412-kontrol-raporu.md",
+                  "criterion": 2,
+                  "note": "Çiftli Kontrolcü (WARN): [GLM opencode/glm-5.3-flash-free -> PASS] build.gradle.kts: versionCode=140012, versionName=1.4.12; AndroidManifest: tachiyomi.extension.version=1.4.12; docs §1 ile üçlü tutarlı. Kullanılan API'ler extensions-lib 1.4.1/okhttp 4.12.0 ile uyumlu, import seti eksiksiz; tek girinti kusuru derlemeyi etkilemez. | [DeepSeek opencode/deepseek-v4.1-flash-free -> PASS] build.gradle.kts versionCode=140012 ve versionName=1.4.12; AndroidManifest.xml meta-data tachiyomi.extension.vers",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "b041e698c56049aece506f3dba52ade8a8f7d66ccf5ee5bbcb728c2366d47bef"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/src/eu/kanade/tachiyomi/extension/tr/golgebahcesi/GolgeBahcesi.kt",
+                  "criterion": 2,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [2] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "7513418b017308b6e7da3eb8beb30e01a6493073984ce7dbc5000e1e8ab91fc1"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/build.gradle.kts",
+                  "criterion": 2,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [2] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "00f587086eee8e6467a722b46f80f3f861008714e77d60e631546af4dbecb43e"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/AndroidManifest.xml",
+                  "criterion": 2,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [2] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "124e48cb81b2cb671d86b135bb58b5e78c0eeb21f9f2e6e88a01e29a58642fa5"
+                },
+                {
+                  "path": "docs/T-GOLGEBAHCESI-V1412.md",
+                  "criterion": 2,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [2] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "a454056503b0f4c146d031497ec0fd7078baad44057454129ef6517700354ccb"
+                }
+              ],
+              "input_snapshot": {
+                "sha256": "b02e19861a21549a6542f55418c317a7293d3f356c2322975778b99434f07f69",
+                "manifest": {
+                  "graph": {
+                    "inputs": [
+                      "site-golgebahcesi"
+                    ],
+                    "objects": [
+                      {
+                        "id": "site-golgebahcesi",
+                        "type": "source_site",
+                        "properties": {
+                          "domain": "golgebahcesi.com",
+                          "status": "active",
+                          "engine": "nextjs_encrypted"
+                        }
+                      }
+                    ],
+                    "object_types": [
+                      {
+                        "id": "source_site",
+                        "properties": {
+                          "domain": {
+                            "type": "string",
+                            "required": true,
+                            "enum": null
+                          },
+                          "status": {
+                            "type": "string",
+                            "required": true,
+                            "enum": [
+                              "active",
+                              "broken",
+                              "investigating"
+                            ]
+                          },
+                          "engine": {
+                            "type": "string",
+                            "required": true,
+                            "enum": [
+                              "solidstart_ssr",
+                              "nextjs_api",
+                              "wordpress_initmanga",
+                              "nextjs_encrypted"
+                            ]
+                          }
+                        }
+                      }
+                    ],
+                    "relation_types": [
+                      {
+                        "id": "implements",
+                        "from_type": "extension_module",
+                        "to_type": "source_site",
+                        "from_min": 1,
+                        "from_max": 1,
+                        "to_min": 0,
+                        "to_max": null,
+                        "impact": "reverse"
+                      }
+                    ],
+                    "relations": [],
+                    "files": []
+                  },
+                  "producer_generations": {},
+                  "contract": {
+                    "input_fields": {},
+                    "acceptance_rules": [],
+                    "support_groups": []
+                  }
+                }
+              },
+              "run_snapshot": {
+                "sha256": "b02e19861a21549a6542f55418c317a7293d3f356c2322975778b99434f07f69",
+                "manifest": {
+                  "graph": {
+                    "inputs": [
+                      "site-golgebahcesi"
+                    ],
+                    "objects": [
+                      {
+                        "id": "site-golgebahcesi",
+                        "type": "source_site",
+                        "properties": {
+                          "domain": "golgebahcesi.com",
+                          "status": "active",
+                          "engine": "nextjs_encrypted"
+                        }
+                      }
+                    ],
+                    "object_types": [
+                      {
+                        "id": "source_site",
+                        "properties": {
+                          "domain": {
+                            "type": "string",
+                            "required": true,
+                            "enum": null
+                          },
+                          "status": {
+                            "type": "string",
+                            "required": true,
+                            "enum": [
+                              "active",
+                              "broken",
+                              "investigating"
+                            ]
+                          },
+                          "engine": {
+                            "type": "string",
+                            "required": true,
+                            "enum": [
+                              "solidstart_ssr",
+                              "nextjs_api",
+                              "wordpress_initmanga",
+                              "nextjs_encrypted"
+                            ]
+                          }
+                        }
+                      }
+                    ],
+                    "relation_types": [
+                      {
+                        "id": "implements",
+                        "from_type": "extension_module",
+                        "to_type": "source_site",
+                        "from_min": 1,
+                        "from_max": 1,
+                        "to_min": 0,
+                        "to_max": null,
+                        "impact": "reverse"
+                      }
+                    ],
+                    "relations": [],
+                    "files": []
+                  },
+                  "producer_generations": {},
+                  "contract": {
+                    "input_fields": {},
+                    "acceptance_rules": [],
+                    "support_groups": []
+                  }
+                }
+              },
+              "output_snapshot": {
+                "sha256": "5be4e3c99f05c10c081b279674e4a4da11ce339c86efcd152c698e0f08b68054",
+                "manifest": {
+                  "inputs": [],
+                  "objects": [],
+                  "object_types": [],
+                  "relation_types": [],
+                  "relations": [],
+                  "files": []
+                }
+              },
+              "generation": 0,
+              "review_reasons": []
+            },
+            "after": {
+              "id": "T-GOLGEBAHCESI-V1412",
+              "title": "Gölge Bahçesi son eklenenler sıralamasını ve DRM / WebView rotalarını düzelt (v1.4.12)",
+              "status": "done",
+              "object_ids": [
+                "site-golgebahcesi",
+                "ext-golgebahcesi"
+              ],
+              "input_ids": [
+                "site-golgebahcesi"
+              ],
+              "output_ids": [],
+              "depends_on": [],
+              "decision_ids": [
+                "D-LOCKED-CHAPTERS"
+              ],
+              "acceptance": [
+                "En son eklenenler sort=latest ile güncel bölümleri ve serileri listelemeli.",
+                "Kötü Avcının Mesaisi, Savaş prensesi, Umine pansiyonu, Kalbimin frekansı, Ölümüne kazanç serileri ve tüm kilitli olmayan bölümler doğru webview/bölüm URL rotasına (/manga/<series>/bolum/<slug>) yönlendirilmeli, 404 hatası vermemeli.",
+                "Android manifest ve build.gradle.kts v1.4.12 (140012) olarak sürüm yükseltilmeli ve kod derlenebilir olmalı."
+              ],
+              "evidence": [
+                {
+                  "path": "denetim/t-golgebahcesi-v1412-kontrol-raporu.md",
+                  "criterion": 0,
+                  "note": "Çiftli Kontrolcü (WARN): [GLM opencode/glm-5.3-flash-free -> PASS] latestUpdatesRequest açıkça sort=latest kullanıyor (popular için sort=popular ile ayrışmış); parseSeriesList data+pagination ile hasNextPage'i currentPage<totalPages üzerinden güvenli hesaplıyor. Kod ölçütle birebir uyumlu; canlı davranış docs §2.A kaydına dayanıyor. | [DeepSeek opencode/deepseek-v4.1-flash-free -> PASS] GolgeBahcesi.kt latestUpdatesRequest içinde sort=latest kullanıyor; latestUpdatesParse -> parseSeriesList data",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "b041e698c56049aece506f3dba52ade8a8f7d66ccf5ee5bbcb728c2366d47bef"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/src/eu/kanade/tachiyomi/extension/tr/golgebahcesi/GolgeBahcesi.kt",
+                  "criterion": 0,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [0] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "7513418b017308b6e7da3eb8beb30e01a6493073984ce7dbc5000e1e8ab91fc1"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/build.gradle.kts",
+                  "criterion": 0,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [0] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "00f587086eee8e6467a722b46f80f3f861008714e77d60e631546af4dbecb43e"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/AndroidManifest.xml",
+                  "criterion": 0,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [0] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "124e48cb81b2cb671d86b135bb58b5e78c0eeb21f9f2e6e88a01e29a58642fa5"
+                },
+                {
+                  "path": "docs/T-GOLGEBAHCESI-V1412.md",
+                  "criterion": 0,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [0] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "a454056503b0f4c146d031497ec0fd7078baad44057454129ef6517700354ccb"
+                },
+                {
+                  "path": "denetim/t-golgebahcesi-v1412-kontrol-raporu.md",
+                  "criterion": 1,
+                  "note": "Çiftli Kontrolcü (WARN): [GLM opencode/glm-5.3-flash-free -> PASS] Rota zinciri tutarlı: chapterListParse '/<series>/<slug>/<id>' saklıyor, getChapterUrl '$baseUrl/manga/<series>/bolum/<slug>' üretiyor, DRM exception'ındaki WebView URL'i aynı şablonu kullanıyor; /seri/ rotası koddan tamamen arındırılmış, isLocked filtresiyle kilitli bölümler eleniyor. 5 seri sayıları (6+49+30+115+14=214) docs §4 tablosuyla aritmetik uyumlu; 214/214 HTTP 200 kanıtı docs §4 kaydına dayanıyor, betik dosyası denetim",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "b041e698c56049aece506f3dba52ade8a8f7d66ccf5ee5bbcb728c2366d47bef"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/src/eu/kanade/tachiyomi/extension/tr/golgebahcesi/GolgeBahcesi.kt",
+                  "criterion": 1,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [1] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "7513418b017308b6e7da3eb8beb30e01a6493073984ce7dbc5000e1e8ab91fc1"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/build.gradle.kts",
+                  "criterion": 1,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [1] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "00f587086eee8e6467a722b46f80f3f861008714e77d60e631546af4dbecb43e"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/AndroidManifest.xml",
+                  "criterion": 1,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [1] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "124e48cb81b2cb671d86b135bb58b5e78c0eeb21f9f2e6e88a01e29a58642fa5"
+                },
+                {
+                  "path": "docs/T-GOLGEBAHCESI-V1412.md",
+                  "criterion": 1,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [1] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "a454056503b0f4c146d031497ec0fd7078baad44057454129ef6517700354ccb"
+                },
+                {
+                  "path": "denetim/t-golgebahcesi-v1412-kontrol-raporu.md",
+                  "criterion": 2,
+                  "note": "Çiftli Kontrolcü (WARN): [GLM opencode/glm-5.3-flash-free -> PASS] build.gradle.kts: versionCode=140012, versionName=1.4.12; AndroidManifest: tachiyomi.extension.version=1.4.12; docs §1 ile üçlü tutarlı. Kullanılan API'ler extensions-lib 1.4.1/okhttp 4.12.0 ile uyumlu, import seti eksiksiz; tek girinti kusuru derlemeyi etkilemez. | [DeepSeek opencode/deepseek-v4.1-flash-free -> PASS] build.gradle.kts versionCode=140012 ve versionName=1.4.12; AndroidManifest.xml meta-data tachiyomi.extension.vers",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "b041e698c56049aece506f3dba52ade8a8f7d66ccf5ee5bbcb728c2366d47bef"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/src/eu/kanade/tachiyomi/extension/tr/golgebahcesi/GolgeBahcesi.kt",
+                  "criterion": 2,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [2] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "7513418b017308b6e7da3eb8beb30e01a6493073984ce7dbc5000e1e8ab91fc1"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/build.gradle.kts",
+                  "criterion": 2,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [2] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "00f587086eee8e6467a722b46f80f3f861008714e77d60e631546af4dbecb43e"
+                },
+                {
+                  "path": "src/tr/golgebahcesi/AndroidManifest.xml",
+                  "criterion": 2,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [2] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "124e48cb81b2cb671d86b135bb58b5e78c0eeb21f9f2e6e88a01e29a58642fa5"
+                },
+                {
+                  "path": "docs/T-GOLGEBAHCESI-V1412.md",
+                  "criterion": 2,
+                  "note": "GLM ve DeepSeek kontrolcü alt ajanları tarafından [2] ölçütü için doğrulanan dosya.",
+                  "reviewer": "glm+deepseek-kontrolcu",
+                  "sha256": "a454056503b0f4c146d031497ec0fd7078baad44057454129ef6517700354ccb"
+                }
+              ],
+              "input_snapshot": {
+                "sha256": "b02e19861a21549a6542f55418c317a7293d3f356c2322975778b99434f07f69",
+                "manifest": {
+                  "graph": {
+                    "inputs": [
+                      "site-golgebahcesi"
+                    ],
+                    "objects": [
+                      {
+                        "id": "site-golgebahcesi",
+                        "type": "source_site",
+                        "properties": {
+                          "domain": "golgebahcesi.com",
+                          "status": "active",
+                          "engine": "nextjs_encrypted"
+                        }
+                      }
+                    ],
+                    "object_types": [
+                      {
+                        "id": "source_site",
+                        "properties": {
+                          "domain": {
+                            "type": "string",
+                            "required": true,
+                            "enum": null
+                          },
+                          "status": {
+                            "type": "string",
+                            "required": true,
+                            "enum": [
+                              "active",
+                              "broken",
+                              "investigating"
+                            ]
+                          },
+                          "engine": {
+                            "type": "string",
+                            "required": true,
+                            "enum": [
+                              "solidstart_ssr",
+                              "nextjs_api",
+                              "wordpress_initmanga",
+                              "nextjs_encrypted"
+                            ]
+                          }
+                        }
+                      }
+                    ],
+                    "relation_types": [
+                      {
+                        "id": "implements",
+                        "from_type": "extension_module",
+                        "to_type": "source_site",
+                        "from_min": 1,
+                        "from_max": 1,
+                        "to_min": 0,
+                        "to_max": null,
+                        "impact": "reverse"
+                      }
+                    ],
+                    "relations": [],
+                    "files": []
+                  },
+                  "producer_generations": {},
+                  "contract": {
+                    "input_fields": {},
+                    "acceptance_rules": [],
+                    "support_groups": []
+                  }
+                }
+              },
+              "run_snapshot": {
+                "sha256": "b02e19861a21549a6542f55418c317a7293d3f356c2322975778b99434f07f69",
+                "manifest": {
+                  "graph": {
+                    "inputs": [
+                      "site-golgebahcesi"
+                    ],
+                    "objects": [
+                      {
+                        "id": "site-golgebahcesi",
+                        "type": "source_site",
+                        "properties": {
+                          "domain": "golgebahcesi.com",
+                          "status": "active",
+                          "engine": "nextjs_encrypted"
+                        }
+                      }
+                    ],
+                    "object_types": [
+                      {
+                        "id": "source_site",
+                        "properties": {
+                          "domain": {
+                            "type": "string",
+                            "required": true,
+                            "enum": null
+                          },
+                          "status": {
+                            "type": "string",
+                            "required": true,
+                            "enum": [
+                              "active",
+                              "broken",
+                              "investigating"
+                            ]
+                          },
+                          "engine": {
+                            "type": "string",
+                            "required": true,
+                            "enum": [
+                              "solidstart_ssr",
+                              "nextjs_api",
+                              "wordpress_initmanga",
+                              "nextjs_encrypted"
+                            ]
+                          }
+                        }
+                      }
+                    ],
+                    "relation_types": [
+                      {
+                        "id": "implements",
+                        "from_type": "extension_module",
+                        "to_type": "source_site",
+                        "from_min": 1,
+                        "from_max": 1,
+                        "to_min": 0,
+                        "to_max": null,
+                        "impact": "reverse"
+                      }
+                    ],
+                    "relations": [],
+                    "files": []
+                  },
+                  "producer_generations": {},
+                  "contract": {
+                    "input_fields": {},
+                    "acceptance_rules": [],
+                    "support_groups": []
+                  }
+                }
+              },
+              "output_snapshot": {
+                "sha256": "5be4e3c99f05c10c081b279674e4a4da11ce339c86efcd152c698e0f08b68054",
+                "manifest": {
+                  "inputs": [],
+                  "objects": [],
+                  "object_types": [],
+                  "relation_types": [],
+                  "relations": [],
+                  "files": []
+                }
+              },
+              "generation": 1,
+              "review_reasons": []
             }
           }
         ]

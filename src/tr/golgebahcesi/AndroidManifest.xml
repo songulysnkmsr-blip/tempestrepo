@@ -15,7 +15,7 @@
             android:value=".GolgeBahcesi" />
         <meta-data
             android:name="tachiyomi.extension.version"
-            android:value="1.4.11" />
+            android:value="1.4.12" />
         <meta-data
             android:name="tachiyomi.extension.nsfw"
             android:value="0" />

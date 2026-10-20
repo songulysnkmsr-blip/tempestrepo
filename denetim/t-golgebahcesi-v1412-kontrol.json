@@ -1,0 +1,122 @@
+{
+  "timestamp": "2026-10-20T22:18:37+03:00",
+  "title": "T-GOLGEBAHCESI-V1412 — Gölge Bahçesi son eklenenler sıralamasını ve DRM / WebView rotalarını düzelt (v1.4.12)",
+  "task_id": "T-GOLGEBAHCESI-V1412",
+  "consensus_verdict": "WARN",
+  "gate_passed": true,
+  "report_path": "denetim/t-golgebahcesi-v1412-kontrol-raporu.md",
+  "files_inspected": [
+    "src/tr/golgebahcesi/src/eu/kanade/tachiyomi/extension/tr/golgebahcesi/GolgeBahcesi.kt",
+    "src/tr/golgebahcesi/build.gradle.kts",
+    "src/tr/golgebahcesi/AndroidManifest.xml",
+    "docs/T-GOLGEBAHCESI-V1412.md"
+  ],
+  "criteria_results": [
+    {
+      "index": 0,
+      "criterion": "En son eklenenler sort=latest ile güncel bölümleri ve serileri listelemeli.",
+      "consensus_verdict": "PASS",
+      "glm_verdict": "PASS",
+      "glm_finding": "latestUpdatesRequest açıkça sort=latest kullanıyor (popular için sort=popular ile ayrışmış); parseSeriesList data+pagination ile hasNextPage'i currentPage<totalPages üzerinden güvenli hesaplıyor. Kod ölçütle birebir uyumlu; canlı davranış docs §2.A kaydına dayanıyor.",
+      "deepseek_verdict": "PASS",
+      "deepseek_finding": "GolgeBahcesi.kt latestUpdatesRequest içinde sort=latest kullanıyor; latestUpdatesParse -> parseSeriesList data ve pagination alanlarını okuyor. docs/T-GOLGEBAHCESI-V1412.md §2.A eski sort=updatedAt değerinin sort=latest ile değiştirildiğini doğruluyor. Canlı API yanıtı veya curl çıktısı denetim paketinde olmadığı için sunucu tarafındaki sıralama etkisi bağımsız doğrulanamadı."
+    },
+    {
+      "index": 1,
+      "criterion": "Kötü Avcının Mesaisi, Savaş prensesi, Umine pansiyonu, Kalbimin frekansı, Ölümüne kazanç serileri ve tüm kilitli olmayan bölümler doğru webview/bölüm URL rotasına (/manga/<series>/bolum/<slug>) yönlendirilmeli, 404 hatası vermemeli.",
+      "consensus_verdict": "WARN",
+      "glm_verdict": "PASS",
+      "glm_finding": "Rota zinciri tutarlı: chapterListParse '/<series>/<slug>/<id>' saklıyor, getChapterUrl '$baseUrl/manga/<series>/bolum/<slug>' üretiyor, DRM exception'ındaki WebView URL'i aynı şablonu kullanıyor; /seri/ rotası koddan tamamen arındırılmış, isLocked filtresiyle kilitli bölümler eleniyor. 5 seri sayıları (6+49+30+115+14=214) docs §4 tablosuyla aritmetik uyumlu; 214/214 HTTP 200 kanıtı docs §4 kaydına dayanıyor, betik dosyası denetime sunulmadı.",
+      "deepseek_verdict": "WARN",
+      "deepseek_finding": "getMangaUrl /manga/<slug>, getChapterUrl /manga/<series>/bolum/<slug> üretiyor; chapterListParse isLocked bölümleri eliyor ve chapter.url değerini /<seriesSlug>/<chapterSlug>/<chapterId> olarak saklıyor. docs §3-§4 tablosunda 6+49+30+115+14=214 ücretsiz bölüm ve 30 kilitli bölüm aritmetiği tutarlı. Ancak chapterListParse seriesSlug alanını her chapter nesnesinden okuyor; API bu alanı döndürmezse continue ile tüm ücretsiz bölümler sessizce elenir. Ayrıca test_all_214_chapters.py ve ham HTTP 200 logları denetim paketinde yok; 214/214 beyanı bağımsız olarak yeniden üretilemiyor."
+    },
+    {
+      "index": 2,
+      "criterion": "Android manifest ve build.gradle.kts v1.4.12 (140012) olarak sürüm yükseltilmeli ve kod derlenebilir olmalı.",
+      "consensus_verdict": "PASS",
+      "glm_verdict": "PASS",
+      "glm_finding": "build.gradle.kts: versionCode=140012, versionName=1.4.12; AndroidManifest: tachiyomi.extension.version=1.4.12; docs §1 ile üçlü tutarlı. Kullanılan API'ler extensions-lib 1.4.1/okhttp 4.12.0 ile uyumlu, import seti eksiksiz; tek girinti kusuru derlemeyi etkilemez.",
+      "deepseek_verdict": "PASS",
+      "deepseek_finding": "build.gradle.kts versionCode=140012 ve versionName=1.4.12; AndroidManifest.xml meta-data tachiyomi.extension.version=1.4.12. Görünen Kotlin kodunda HttpSource abstract üyelerinin tamamı uygulanmış, getMangaUrl/getChapterUrl imzaları ve importlar tutarlı; belirgin sözdizimi veya tip hatası yok. Ancak sağlanan .kt metni DOSYA KISALTILDI işareti ve tekrarlanan kuyruk içeriyor; bu nedenle tam dosyanın derlenebilirliği bu paketle bağımsız doğrulanamıyor. Orvant ext-golgebahcesi kaydındaki version_code=1 de 140012 ile senkron değil."
+    }
+  ],
+  "glm": {
+    "mode": "opencode-free",
+    "model": "opencode/glm-5.3-flash-free",
+    "verdict": "WARN",
+    "parsed": {
+      "auditor": "glm-kontrolcu",
+      "overall_verdict": "WARN",
+      "criteria": [
+        {
+          "index": 0,
+          "verdict": "PASS",
+          "finding": "latestUpdatesRequest açıkça sort=latest kullanıyor (popular için sort=popular ile ayrışmış); parseSeriesList data+pagination ile hasNextPage'i currentPage<totalPages üzerinden güvenli hesaplıyor. Kod ölçütle birebir uyumlu; canlı davranış docs §2.A kaydına dayanıyor."
+        },
+        {
+          "index": 1,
+          "verdict": "PASS",
+          "finding": "Rota zinciri tutarlı: chapterListParse '/<series>/<slug>/<id>' saklıyor, getChapterUrl '$baseUrl/manga/<series>/bolum/<slug>' üretiyor, DRM exception'ındaki WebView URL'i aynı şablonu kullanıyor; /seri/ rotası koddan tamamen arındırılmış, isLocked filtresiyle kilitli bölümler eleniyor. 5 seri sayıları (6+49+30+115+14=214) docs §4 tablosuyla aritmetik uyumlu; 214/214 HTTP 200 kanıtı docs §4 kaydına dayanıyor, betik dosyası denetime sunulmadı."
+        },
+        {
+          "index": 2,
+          "verdict": "PASS",
+          "finding": "build.gradle.kts: versionCode=140012, versionName=1.4.12; AndroidManifest: tachiyomi.extension.version=1.4.12; docs §1 ile üçlü tutarlı. Kullanılan API'ler extensions-lib 1.4.1/okhttp 4.12.0 ile uyumlu, import seti eksiksiz; tek girinti kusuru derlemeyi etkilemez."
+        }
+      ],
+      "critical_issues": [],
+      "recommendations": [
+        "Karışık DRM uç durumu: bir bölümde hem açık hem .enc sayfa varsa openPages kısmi dönüyor ve şifreli sayfalar sessizce düşüyor; encCount>0 + openPages.isNotEmpty kombinasyonunda kullanıcı uyarısı veya tam DRM yönlendirmesi düşünülebilir.",
+        "pages dizisi tamamen boş/eksik geldiğinde (openPages boş ve encCount==0) emptyList() dönülüyor; Turnstile-gated DRM durumlarında kullanıcı 'no pages' görür, WebView ipucu bu dalı da kapsayacak şekilde genişletilebilir.",
+        "test_all_214_chapters.py betiği ve ham HTTP yanıt kanıtı docs/T-GOLGEBAHCESI-V1412.md içine eklenerek 214/214 doğrulamanın bağımsız yeniden üretilebilirliği sağlansın.",
+        "chapter_number fallback'i 0.0 olan bölümler okuyucu sıralamasını bozabilir; number alanı eksikse slug/title'dan çıkarım veya varsayılan alternatif değerlendirilebilir.",
+        "Küçük kod hijyeni: pageListParse içindeki 'val json = ...' satırının girinti düzeltmesi ve number→slug fallback mantığındaki (chapterListParse içindeki çift hesaplama) tekrarın tek yardımcı fonksiyona alınması."
+      ]
+    },
+    "errors": []
+  },
+  "deepseek": {
+    "mode": "opencode-free",
+    "model": "opencode/deepseek-v4.1-flash-free",
+    "verdict": "WARN",
+    "parsed": {
+      "auditor": "deepseek-kontrolcu",
+      "overall_verdict": "WARN",
+      "criteria": [
+        {
+          "index": 0,
+          "verdict": "PASS",
+          "finding": "GolgeBahcesi.kt latestUpdatesRequest içinde sort=latest kullanıyor; latestUpdatesParse -> parseSeriesList data ve pagination alanlarını okuyor. docs/T-GOLGEBAHCESI-V1412.md §2.A eski sort=updatedAt değerinin sort=latest ile değiştirildiğini doğruluyor. Canlı API yanıtı veya curl çıktısı denetim paketinde olmadığı için sunucu tarafındaki sıralama etkisi bağımsız doğrulanamadı."
+        },
+        {
+          "index": 1,
+          "verdict": "WARN",
+          "finding": "getMangaUrl /manga/<slug>, getChapterUrl /manga/<series>/bolum/<slug> üretiyor; chapterListParse isLocked bölümleri eliyor ve chapter.url değerini /<seriesSlug>/<chapterSlug>/<chapterId> olarak saklıyor. docs §3-§4 tablosunda 6+49+30+115+14=214 ücretsiz bölüm ve 30 kilitli bölüm aritmetiği tutarlı. Ancak chapterListParse seriesSlug alanını her chapter nesnesinden okuyor; API bu alanı döndürmezse continue ile tüm ücretsiz bölümler sessizce elenir. Ayrıca test_all_214_chapters.py ve ham HTTP 200 logları denetim paketinde yok; 214/214 beyanı bağımsız olarak yeniden üretilemiyor."
+        },
+        {
+          "index": 2,
+          "verdict": "PASS",
+          "finding": "build.gradle.kts versionCode=140012 ve versionName=1.4.12; AndroidManifest.xml meta-data tachiyomi.extension.version=1.4.12. Görünen Kotlin kodunda HttpSource abstract üyelerinin tamamı uygulanmış, getMangaUrl/getChapterUrl imzaları ve importlar tutarlı; belirgin sözdizimi veya tip hatası yok. Ancak sağlanan .kt metni DOSYA KISALTILDI işareti ve tekrarlanan kuyruk içeriyor; bu nedenle tam dosyanın derlenebilirliği bu paketle bağımsız doğrulanamıyor. Orvant ext-golgebahcesi kaydındaki version_code=1 de 140012 ile senkron değil."
+        }
+      ],
+      "critical_issues": [],
+      "recommendations": [
+        "chapterListParse içinde seriesSlug için manga.url tabanlı bir fallback ekleyin; aksi halde chapter API'sinde seriesSlug yoksa kilitli olmayan tüm bölümler sessizce kaybolur.",
+        "test_all_214_chapters.py dosyasını ve ham HTTP durum kodlarını (214/214) denetim/teslim paketine ekleyin; yalnızca özet tablo bağımsız kanıt için yeterli değil.",
+        "GolgeBahcesi.kt dosyasının kesintisiz tam sürümünü ve CI derleme logunu ekleyin; mevcut metin kesinti işareti ve tekrarlanan blok içeriyor.",
+        "Karışık açık/.enc sayfa durumunda yalnızca açık sayfaları döndürmek yerine bölümün eksik olduğunu belirten açık bir hata üretin.",
+        "JSONObject(response.body?.string().orEmpty()) çağrılarını boş veya geçersiz gövde için koruyun; şu haliyle boş yanıt JSONException fırlatır.",
+        "build.gradle.kts içindeki storePassword/keyPassword değerlerini CI ortam değişkenlerine veya repo dışı keystore yapılandırmasına taşıyın.",
+        "API'den gelen slug ve göreli kapak URL'lerini path segmenti olarak encode edin ve kapak URL'lerini mutlaklaştırın.",
+        "Orvant ext-golgebahcesi version_code kaydını 140012 olarak güncelleyin ve docs kanıtını output_ids/evidence olarak kaydedin."
+      ]
+    },
+    "errors": []
+  },
+  "orvant_submission": {
+    "submitted": true,
+    "submit_revision": 52,
+    "completed": true,
+    "complete_revision": 53
+  }
+}

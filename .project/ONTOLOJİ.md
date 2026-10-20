@@ -1,6 +1,6 @@
 # Tachimanga Türkçe Manga Uzantı Deposu — Ontoloji
 
-Revizyon: 49. Canlı görünüm için `ontology` komutunu çalıştır.
+Revizyon: 53. Canlı görünüm için `ontology` komutunu çalıştır.
 
 ## Türler ve özellikler
 
@@ -74,7 +74,8 @@ Oklar kayıtlı ilişki yönüdür; değişiklik etkisinin yönü üstte ayrıca
 - **T-GOLGEBAHCESI — Gölge Bahçesi uzantısını geliştir ve kilitli bölümleri filtrele**: girdiler [site-golgebahcesi], çıktılar [ext-golgebahcesi], durum done.
 - **T-REPO-BUILD — Repository indeks ve APK derleme mantığını kur**: girdiler [ext-juratempest, ext-mangtto, ext-orimanga, ext-golgebahcesi], çıktılar [], durum done.
 - **T-GITHUB-CI — GitHub Actions CI iş akışını ve GitHub repo senkronizasyonunu kur**: girdiler [release-index], çıktılar [], durum done.
-- **T-GOLGEBAHCESI-FIX — Gölge Bahçesi şifreli bölüm çökme ve URL yönlendirme sorunlarını gider**: girdiler [site-golgebahcesi], çıktılar [], durum done.
+- **T-GOLGEBAHCESI-FIX — Gölge Bahçesi şifreli bölüm çökme ve URL yönlendirme sorunlarını gider**: girdiler [site-golgebahcesi], çıktılar [], durum needs_review.
 - **T-MERLINSCANS — Merlin Scans (merlinscans.org) uzantısını geliştir ve repoya ekle**: girdiler [site-merlinscans], çıktılar [ext-merlinscans], durum done.
+- **T-GOLGEBAHCESI-V1412 — Gölge Bahçesi son eklenenler sıralamasını ve DRM / WebView rotalarını düzelt (v1.4.12)**: girdiler [site-golgebahcesi], çıktılar [], durum done.
 
 Etki yeniden inceleme ihtiyacıdır; nesnenin yanlış olduğu hükmü değildir.

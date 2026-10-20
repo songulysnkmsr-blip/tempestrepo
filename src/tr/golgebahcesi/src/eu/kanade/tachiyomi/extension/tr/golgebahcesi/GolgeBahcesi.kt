@@ -59,7 +59,7 @@ class GolgeBahcesi : HttpSource() {
         val url = "$apiBaseUrl/series".toHttpUrl().newBuilder()
             .addQueryParameter("page", page.toString())
             .addQueryParameter("limit", "24")
-            .addQueryParameter("sort", "updatedAt")
+            .addQueryParameter("sort", "latest")
             .build()
         return GET(url.toString(), headers)
     }
@@ -106,7 +106,7 @@ class GolgeBahcesi : HttpSource() {
     }
 
     // Manga Details
-    override fun getMangaUrl(manga: SManga): String = "$baseUrl/seri/${manga.url}"
+    override fun getMangaUrl(manga: SManga): String = "$baseUrl/manga/${manga.url}"
 
     override fun mangaDetailsRequest(manga: SManga): Request =
         GET("$apiBaseUrl/series/${manga.url}", headers)
@@ -163,16 +163,20 @@ class GolgeBahcesi : HttpSource() {
             if (isLocked) continue
 
             val seriesSlug = ch.optString("seriesSlug")
+            val chapterSlug = ch.optString("slug").ifBlank {
+                val numObj = ch.optDouble("number", 0.0)
+                val numStr = if (numObj % 1.0 == 0.0) numObj.toInt().toString() else numObj.toString()
+                "chapter-$numStr"
+            }
             val chapterId = ch.optString("id")
             if (chapterId.isBlank() || seriesSlug.isBlank()) continue
 
-            // Site URL'leri tam sayı bölümleri noktasız gösterir: /seri/<slug>/bolum-12
             val numObj = ch.optDouble("number", 0.0)
             val numStr = if (numObj % 1.0 == 0.0) numObj.toInt().toString() else numObj.toString()
 
             val chapter = SChapter.create().apply {
-                // Store series slug, chapter number segment and ID: /<seriesSlug>/bolum-<numStr>/<chapterId>
-                url = "/$seriesSlug/bolum-$numStr/$chapterId"
+                // Store series slug, chapter slug and ID: /<seriesSlug>/<chapterSlug>/<chapterId>
+                url = "/$seriesSlug/$chapterSlug/$chapterId"
 
                 name = ch.optString("title").ifBlank { "Bölüm $numStr" }
                 chapter_number = numObj.toFloat()
@@ -200,7 +204,7 @@ class GolgeBahcesi : HttpSource() {
         return if (parts.size >= 2) {
             val series = parts[0]
             val slug = parts[1]
-            "$baseUrl/seri/$series/$slug"
+            "$baseUrl/manga/$series/bolum/$slug"
         } else {
             baseUrl
         }
@@ -234,47 +238,30 @@ class GolgeBahcesi : HttpSource() {
 
         val json = JSONObject(response.body?.string().orEmpty())
         val seriesSlug = json.optString("seriesSlug")
-        val numObj = json.optDouble("number", 0.0)
-        val numStr = if (numObj % 1.0 == 0.0) numObj.toInt().toString() else numObj.toString()
+        val chapterSlug = json.optString("slug").ifBlank {
+            val numObj = json.optDouble("number", 0.0)
+            val numStr = if (numObj % 1.0 == 0.0) numObj.toInt().toString() else numObj.toString()
+            "chapter-$numStr"
+        }
 
         val pagesArr = json.optJSONArray("pages") ?: JSONArray()
         val (openPages, encCount) = parsePagesArray(pagesArr)
 
         if (openPages.isNotEmpty()) return openPages
 
-        if (encCount > 0 && seriesSlug.isNotBlank() && numStr.isNotBlank()) {
-            val manifestUrl = "$apiBaseUrl/chapters/$seriesSlug/chapter-$numStr/manifest"
-            val manifestHeaders = headers.newBuilder()
-                .add("X-Client-Check", "eyJib3RkIjpmYWxzZSwiZXZ0IjoxLCJ2IjoxfQ==")
-                .build()
-            try {
-                client.newCall(GET(manifestUrl, manifestHeaders)).execute().use { manifestRes ->
-                    if (manifestRes.isSuccessful) {
-                        val manifestJson = JSONObject(manifestRes.body?.string().orEmpty())
-                        val manifestArr = manifestJson.optJSONArray("pages") ?: JSONArray()
-                        val (manifestPages, _) = parsePagesArray(manifestArr)
-                        if (manifestPages.isNotEmpty()) return manifestPages
-                    }
-                }
-            } catch (_: Exception) {
-                // fall through to error below
-            }
-        }
-
         if (encCount > 0) {
-            val webViewUrl = if (seriesSlug.isNotBlank()) {
-                "$baseUrl/seri/$seriesSlug/bolum-$numStr"
+            val webViewUrl = if (seriesSlug.isNotBlank() && chapterSlug.isNotBlank()) {
+                "$baseUrl/manga/$seriesSlug/bolum/$chapterSlug"
             } else {
                 baseUrl
             }
             throw Exception(
-                "Bu bölüm WASM şifrelemesi (DRM) kullanıyor. Sağ üstten WebView ile açarak okuyabilirsiniz: $webViewUrl"
+                "Bu bölüm site tarafından şifrelenmiştir (DRM). Sağ üstteki WebView (Dünya) simgesine dokunarak doğrudan okuyabilirsiniz: $webViewUrl"
             )
         }
 
         return emptyList()
     }
-
     override fun imageUrlParse(response: Response): String {
         throw UnsupportedOperationException("Not used.")
     }
