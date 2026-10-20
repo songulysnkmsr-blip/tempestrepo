@@ -11,13 +11,13 @@
         "name": "G\u00f6lge Bah\u00e7esi",
         "packageName": "eu.kanade.tachiyomi.extension.tr.golgebahcesi",
         "resources": {
-          "apkUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/apk/tachiyomi-tr.golgebahcesi-v1.4.9.apk",
+          "apkUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/apk/tachiyomi-tr.golgebahcesi-v1.4.11.apk",
           "iconUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/icon/eu.kanade.tachiyomi.extension.tr.golgebahcesi.png",
-          "jarUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/jar/tachiyomi-tr.golgebahcesi-v1.4.9.jar"
+          "jarUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/jar/tachiyomi-tr.golgebahcesi-v1.4.11.jar"
         },
         "extensionLib": "1.4",
-        "versionCode": "140009",
-        "versionName": "1.4.9",
+        "versionCode": "140011",
+        "versionName": "1.4.11",
         "contentWarning": "CONTENT_WARNING_SAFE",
         "sources": [
           {
@@ -67,6 +67,27 @@
             "name": "Mangtto",
             "language": "tr",
             "homeUrl": "https://mangtto.com"
+          }
+        ]
+      },
+      {
+        "name": "Merlin Scans",
+        "packageName": "eu.kanade.tachiyomi.extension.tr.merlinscans",
+        "resources": {
+          "apkUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/apk/tachiyomi-tr.merlinscans-v1.4.4.apk",
+          "iconUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/icon/eu.kanade.tachiyomi.extension.tr.merlinscans.png",
+          "jarUrl": "https://raw.githubusercontent.com/songulysnkmsr-blip/tempestrepo/repo/jar/tachiyomi-tr.merlinscans-v1.4.4.jar"
+        },
+        "extensionLib": "1.4",
+        "versionCode": "140004",
+        "versionName": "1.4.4",
+        "contentWarning": "CONTENT_WARNING_SAFE",
+        "sources": [
+          {
+            "id": "8373525628494692390",
+            "name": "Merlin Scans",
+            "language": "tr",
+            "homeUrl": "https://merlinscans.org"
           }
         ]
       },
